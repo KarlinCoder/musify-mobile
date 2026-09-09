@@ -43,31 +43,31 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
+          cache: "pnpm"
 
-      - name: 📦 Get npm cache directory path
-        id: npm-cache-dir-path
-        run: echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT
+      - name: 📦 Get pnpm cache directory path
+        id: pnpm-cache-dir-path
+        run: echo "dir=$(pnpm store path)" >> $GITHUB_OUTPUT
 
-      - name: 📦 Setup npm cache
+      - name: 📦 Setup pnpm cache
         uses: actions/cache@v3
         with:
-          path: ${{ steps.npm-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          path: ${{ steps.pnpm-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-npm-
+            ${{ runner.os }}-pnpm-
 
       - name: 📦 Install dependencies
-        run: npm install
+        run: pnpm install
 
       - name: 🧪 Run TypeScript check
-        run: npx tsc
+        run: pnpm tsc
 
       - name: 🧹 Run ESLint
-        run: npm run lint
+        run: pnpm lint
 
       - name: 🎨 Run Prettier check
-        run: npm run format:check
+        run: pnpm format:check
 
   build-and-release:
     needs: test
@@ -81,24 +81,24 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
+          cache: "pnpm"
 
-      - name: 📦 Get npm cache directory path
-        id: npm-cache-dir-path
-        run: echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT
+      - name: 📦 Get pnpm cache directory path
+        id: pnpm-cache-dir-path
+        run: echo "dir=$(pnpm store path)" >> $GITHUB_OUTPUT
 
-      - name: 📦 Setup npm cache
+      - name: 📦 Setup pnpm cache
         uses: actions/cache@v3
         with:
-          path: ${{ steps.npm-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          path: ${{ steps.pnpm-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.os }}-npm-
+            ${{ runner.os }}-pnpm-
 
       - name: 📦 Install dependencies
         run: |
-          npm install
-          npm install -g eas-cli@latest
+          pnpm install
+          pnpm add -g eas-cli@latest
 
       - name: 🔄 Verify EAS CLI installation
         run: |
