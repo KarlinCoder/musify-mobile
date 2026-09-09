@@ -43,11 +43,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-
-      - name: 📦 Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
+          cache: "pnpm"
 
       - name: 📦 Get pnpm cache directory path
         id: pnpm-cache-dir-path
@@ -85,11 +81,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-
-      - name: 📦 Install pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
+          cache: "pnpm"
 
       - name: 📦 Get pnpm cache directory path
         id: pnpm-cache-dir-path
@@ -219,7 +211,6 @@ jobs:
           body_path: changelog.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: 📦 Upload build artifacts to GitHub
         uses: actions/upload-artifact@v4
         with:
