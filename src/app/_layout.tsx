@@ -1,13 +1,17 @@
-import { Slot, Stack } from "expo-router";
-import { Text } from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import "../global.css";
+import { Slot, Stack } from "expo-router";
+import { Text, View } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function RootLayout() {
   return (
     <SafeAreaProvider>
-      <Text className="w-40 text-5xl bg-red-600">Hola mundo</Text>
-      <Slot />
+      <View className="flex-1 bg-black">
+        <Slot />
+      </View>
+
+      <StatusBar style="light" />
     </SafeAreaProvider>
   );
 }

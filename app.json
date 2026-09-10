@@ -27,6 +27,14 @@
     },
     "plugins": [
       [
+        "expo-navigation-bar",
+        {
+          "enforceContrast": true,
+          "hidden": false,
+          "style": "dark"
+        }
+      ],
+      [
         "expo-build-properties",
         {
           "android": {
