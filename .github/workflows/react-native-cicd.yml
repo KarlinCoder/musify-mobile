@@ -15,9 +15,7 @@ on:
         type: choice
         description: "Build type to run"
         options:
-          - dev
           - prod-apk
-          - prod-aab
           - all
 
 env:
@@ -39,11 +37,6 @@ jobs:
     steps:
       - name: 🏗 Checkout repository
         uses: actions/checkout@v4
-
-      - name: 🏗 Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - name: 🏗 Setup Node.js
         uses: actions/setup-node@v4
@@ -72,27 +65,6 @@ jobs:
         run: |
           echo "EAS CLI version:"
           eas --version
-
-      # - name: 📋 Fix package.json main entry
-      #   run: |
-      #     # Check if jq is installed, if not install it
-      #     if ! command -v jq &> /dev/null; then
-      #       echo "Installing jq..."
-      #       sudo apt-get update && sudo apt-get install -y jq
-      #     fi
-
-      #     # Fix the main entry in package.json
-      #     if [ -f ./package.json ]; then
-      #       # Create a backup
-      #       cp package.json package.json.bak
-      #       # Update the package.json
-      #       jq '.main = "node_modules/expo/AppEntry.js"' package.json > package.json.tmp && mv package.json.tmp package.json
-      #       echo "Updated package.json main entry"
-      #       cat package.json | grep "main"
-      #     else
-      #       echo "package.json not found"
-      #       exit 1
-      #     fi
 
       - name: 📋 Update metro.config.js for SVG support
         run: |
@@ -134,14 +106,6 @@ jobs:
         env:
           NODE_ENV: production
 
-      # - name: 📱 Build Production AAB
-      #   if: github.event.inputs.buildType == 'all' || github.event.inputs.buildType == 'prod-aab' || github.event_name == 'push'
-      #   run: |
-      #     export NODE_OPTIONS="--openssl-legacy-provider --max_old_space_size=4096"
-      #     eas build --platform android --profile production --local --non-interactive --output=./app-prod.aab
-      #   env:
-      #     NODE_ENV: production
-
       - name: 🏷️ Generate build information
         id: build-info
         run: |
@@ -164,9 +128,7 @@ jobs:
           name: "Release v${{ steps.build-info.outputs.version }}-${{ steps.build-info.outputs.build_number }}"
           tag_name: "v${{ steps.build-info.outputs.version }}-${{ steps.build-info.outputs.build_number }}"
           files: |
-            ./app-dev.apk
             ./app-prod.apk
-            ./app-prod.aab
           body_path: changelog.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -175,7 +137,5 @@ jobs:
         with:
           name: app-builds
           path: |
-            ./app-dev.apk
             ./app-prod.apk
-            ./app-prod.aab
           retention-days: 7
