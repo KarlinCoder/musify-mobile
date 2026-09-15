@@ -143,7 +143,7 @@ jobs:
           name: "Release v${{ steps.build-info.outputs.version }}-${{ steps.build-info.outputs.build_number }}"
           tag_name: "v${{ steps.build-info.outputs.version }}-${{ steps.build-info.outputs.build_number }}"
           files: |
-            ./app-prod.apk
+            ./app-dev.apk
           body_path: changelog.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -152,5 +152,5 @@ jobs:
         with:
           name: app-builds
           path: |
-            ./app-prod.apk
+            ./app-dev.apk
           retention-days: 7

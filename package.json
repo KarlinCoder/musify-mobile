@@ -7,6 +7,7 @@
     "@expo/vector-icons": "^15.1.1",
     "axios": "^1.20.0",
     "babel-plugin-import-graphql": "^2.8.1",
+    "browser-id3-writer": "^6.4.0",
     "buffer": "^6.0.3",
     "expo": "~57.0.21",
     "expo-build-properties": "~57.0.17",

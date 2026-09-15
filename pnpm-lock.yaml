@@ -23,6 +23,9 @@ importers:
       babel-plugin-import-graphql:
         specifier: ^2.8.1
         version: 2.8.1(graphql-tag@2.12.7(graphql@17.0.2))(graphql@17.0.2)
+      browser-id3-writer:
+        specifier: ^6.4.0
+        version: 6.4.0
       buffer:
         specifier: ^6.0.3
         version: 6.0.3
@@ -1786,6 +1789,9 @@ packages:
   braces@3.0.3:
     resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
     engines: {node: '>=8'}
+
+  browser-id3-writer@6.4.0:
+    resolution: {integrity: sha512-4tbo+MMGuINslAzZugHdLDGj6m2vKqgXqG4QXBYnPJndRw1jx1eGlDMNwsR6lKrjuzw+GZtHwFNoKuUJBbF22A==}
 
   browserslist@4.28.9:
     resolution: {integrity: sha512-EWazOblFYUvlGZcfGhPUPmYh3nikUxBVb+y9MJun5f3hBi812X+8MSQTujLBtgK3cf51fJWbWfOjyeO954d+Eg==}
@@ -6561,6 +6567,8 @@ snapshots:
   braces@3.0.3:
     dependencies:
       fill-range: 7.1.1
+
+  browser-id3-writer@6.4.0: {}
 
   browserslist@4.28.9:
     dependencies:
