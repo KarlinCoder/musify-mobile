@@ -1,0 +1,46 @@
+#import "./fragments.graphql"
+
+query GetArtist(
+  $artistId: String!
+  $topTracksFirst: Int = 50
+  $topTracksAfter: String
+  $albumsFirst: Int = 25
+  $albumsAfter: String
+) {
+  artist(artistId: $artistId) {
+    ...ArtistFields
+    url {
+      ... on Url {
+        webUrl
+      }
+    }
+    topTracks(first: $topTracksFirst, after: $topTracksAfter) {
+      edges {
+        cursor
+        node {
+          ...TrackFields
+        }
+      }
+      pageInfo {
+        ...PageInfoFields
+      }
+    }
+    albums(
+      types: [ALBUM, SINGLES, EP]
+      order: RELEASE_DATE
+      first: $albumsFirst
+      after: $albumsAfter
+    ) {
+      edges {
+        cursor
+        node {
+          ...AlbumFields
+          tracksCount
+        }
+      }
+      pageInfo {
+        ...PageInfoFields
+      }
+    }
+  }
+}

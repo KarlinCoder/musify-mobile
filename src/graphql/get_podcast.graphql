@@ -1,0 +1,38 @@
+#import "./fragments.graphql"
+
+query GetPodcast(
+  $podcastId: String!
+  $episodesFirst: Int = 50
+  $episodesAfter: String
+  $episodeOrder: PodcastEpisodeOrder = LATEST
+) {
+  podcast(podcastId: $podcastId) {
+    ...PodcastFields
+    rawEpisodes
+    isAdvertisingAllowed
+    isDownloadAllowed
+    rights {
+      ads {
+        available
+      }
+      sub {
+        available
+      }
+    }
+    episodes(
+      first: $episodesFirst
+      after: $episodesAfter
+      order: $episodeOrder
+    ) {
+      edges {
+        cursor
+        node {
+          ...PodcastEpisodeFields
+        }
+      }
+      pageInfo {
+        ...PageInfoFields
+      }
+    }
+  }
+}

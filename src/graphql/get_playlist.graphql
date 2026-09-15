@@ -1,0 +1,25 @@
+#import "./fragments.graphql"
+
+query GetPlaylist(
+  $playlistId: String!
+  $tracksFirst: Int = 50
+  $tracksAfter: String
+) {
+  playlist(playlistId: $playlistId) {
+    ...PlaylistFields
+    isPrivate
+    isCollaborative
+    estimatedDuration
+    tracks(first: $tracksFirst, after: $tracksAfter) {
+      edges {
+        cursor
+        node {
+          ...TrackFields
+        }
+      }
+      pageInfo {
+        ...PageInfoFields
+      }
+    }
+  }
+}

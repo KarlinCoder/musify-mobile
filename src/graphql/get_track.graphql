@@ -1,0 +1,69 @@
+query GetTrack($trackId: String!) {
+  track(trackId: $trackId) {
+    id
+    title
+    ISRC
+    diskInfo {
+      diskNumber
+      trackNumber
+    }
+    duration
+    isExplicit
+    isFavorite
+    popularity
+    album {
+      id
+      displayTitle
+      cover {
+        id
+        urls(pictureRequest: { width: 264, height: 264 })
+      }
+    }
+    contributors(first: 10, roles: [MAIN, FEATURED]) {
+      edges {
+        roles
+        node {
+          ... on Artist {
+            id
+            name
+          }
+        }
+      }
+    }
+    isAtmos
+    releaseDate
+    media {
+      id
+      version
+      token {
+        payload
+        expiresAt
+      }
+      estimatedSizes {
+        MP3_MISC
+        MP3_128
+        MP3_320
+        FLAC
+      }
+      rights {
+        ads {
+          available
+        }
+        sub {
+          available
+        }
+      }
+    }
+    lyrics {
+      synchronizedLines {
+        lrcTimestamp
+        line
+        milliseconds
+        duration
+      }
+      text
+      copyright
+      writers
+    }
+  }
+}

@@ -1,0 +1,35 @@
+#import "./fragments.graphql"
+
+query GetAlbum(
+  $albumId: String!
+  $tracksFirst: Int = 50
+  $tracksAfter: String
+) {
+  album(albumId: $albumId) {
+    ...AlbumFields
+    duration
+    tracksCount
+    discsCount
+    isTakenDown
+    fallback {
+      id
+      displayTitle
+    }
+    tracks(first: $tracksFirst, after: $tracksAfter) {
+      edges {
+        cursor
+        node {
+          ...TrackFields
+        }
+      }
+      pageInfo {
+        ...PageInfoFields
+      }
+    }
+    url {
+      ... on Url {
+        webUrl
+      }
+    }
+  }
+}

@@ -1,0 +1,177 @@
+# Add an artist to the user's favorites.
+
+mutation AddArtistToFavorite($artistId: String!) {
+  addArtistToFavorite(artistId: $artistId) {
+    artist {
+      id
+      name
+    }
+  }
+}
+
+# Remove an artist from the user's favorites.
+
+mutation RemoveArtistFromFavorite($artistId: String!) {
+  removeArtistFromFavorite(artistId: $artistId) {
+    artist {
+      id
+      name
+    }
+  }
+}
+
+# Add an album to the user's favorites.
+
+mutation AddAlbumToFavorite($albumId: String!) {
+  addAlbumToFavorite(albumId: $albumId) {
+    album {
+      id
+      displayTitle
+    }
+  }
+}
+
+# Remove an album from the user's favorites.
+
+mutation RemoveAlbumFromFavorite($albumId: String!) {
+  removeAlbumFromFavorite(albumId: $albumId) {
+    album {
+      id
+      displayTitle
+    }
+  }
+}
+
+# Add a track to the user's favorites.
+
+mutation AddTrackToFavorite($trackId: String!) {
+  addTrackToFavorite(trackId: $trackId) {
+    track {
+      id
+      title
+    }
+  }
+}
+
+# Remove a track from the user's favorites.
+
+mutation RemoveTrackFromFavorite($trackId: String!) {
+  removeTrackFromFavorite(trackId: $trackId) {
+    track {
+      id
+      title
+    }
+  }
+}
+
+# Add a playlist to the user's favorites.
+
+mutation AddPlaylistToFavorite($playlistId: String!) {
+  addPlaylistToFavorite(playlistId: $playlistId) {
+    playlist {
+      id
+      title
+    }
+  }
+}
+
+# Remove a playlist from the user's favorites.
+
+mutation RemovePlaylistFromFavorite($playlistId: String!) {
+  removePlaylistFromFavorite(playlistId: $playlistId) {
+    playlist {
+      id
+      title
+    }
+  }
+}
+
+# Add a podcast to the user's favorites.
+
+mutation AddPodcastToFavorite($podcastId: String!) {
+  addPodcastToFavorite(podcastId: $podcastId) {
+    podcast {
+      id
+      displayTitle
+    }
+    favoritedAt
+  }
+}
+
+# Remove a podcast from the user's favorites.
+
+mutation RemovePodcastFromFavorite($podcastId: String!) {
+  removePodcastFromFavorite(podcastId: $podcastId) {
+    podcast {
+      id
+      displayTitle
+    }
+  }
+}
+
+# Bookmark a podcast episode with playback offset (in seconds).
+
+mutation BookmarkPodcastEpisode($episodeId: String!, $offset: Int!) {
+  bookmarkPodcastEpisode(episodeId: $episodeId, offset: $offset) {
+    status
+    bookmark {
+      position
+      isPlayed
+      bookmarkedAt
+    }
+  }
+}
+
+# Remove bookmark from a podcast episode.
+
+mutation UnbookmarkPodcastEpisode($episodeId: String!) {
+  unbookmarkPodcastEpisode(episodeId: $episodeId) {
+    status
+    episode {
+      id
+      title
+    }
+  }
+}
+
+# Mark a podcast episode as played.
+
+mutation MarkAsPlayedPodcastEpisode($episodeId: String!) {
+  markAsPlayedPodcastEpisode(episodeId: $episodeId) {
+    status
+    bookmark {
+      position
+      isPlayed
+      bookmarkedAt
+    }
+  }
+}
+
+# Mark a podcast episode as not played.
+
+mutation MarkAsNotPlayedPodcastEpisode($episodeId: String!) {
+  markAsNotPlayedPodcastEpisode(episodeId: $episodeId) {
+    status
+    episode {
+      id
+      title
+    }
+  }
+}
+
+# Add an audiobook to the user's favorites (deprecated but functional).
+
+mutation AddAudiobookToFavorite($audiobookId: String!) {
+  addAudiobookToFavorite(audiobookId: $audiobookId) {
+    id
+    favoritedAt
+  }
+}
+
+# Remove an audiobook from the user's favorites (deprecated but functional).
+
+mutation RemoveAudiobookFromFavorite($audiobookId: String!) {
+  removeAudiobookFromFavorite(audiobookId: $audiobookId) {
+    id
+  }
+}

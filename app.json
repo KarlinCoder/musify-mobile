@@ -1,15 +1,16 @@
 {
   "expo": {
-    "name": "musify-mobile",
+    "name": "Musify",
     "slug": "musify",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "musifymobile",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "dark",
     "ios": {
       "icon": "./assets/expo.icon"
     },
+    "backgroundColor": "#000000",
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
@@ -51,7 +52,7 @@
           "imageWidth": 76
         }
       ],
-      "expo-font",
+
       [
         "expo-status-bar",
         {

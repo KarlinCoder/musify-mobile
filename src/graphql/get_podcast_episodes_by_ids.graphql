@@ -1,0 +1,7 @@
+#import "./fragments.graphql"
+
+query GetPodcastEpisodesByIds($ids: [String!]!) {
+  podcastEpisodesByIds(ids: $ids) {
+    ...PodcastEpisodeFields
+  }
+}

@@ -1,0 +1,22 @@
+#import "./fragments.graphql"
+
+# Get tracks for a specific FlowConfig (mood or genre flow).
+# Each call returns a fresh batch of algorithmically generated tracks.
+
+query GetFlowConfigTracks($flowConfigId: String!) {
+  flowConfig(flowConfigId: $flowConfigId) {
+    id
+    title
+    visuals {
+      hardwareSquareIcon {
+        id
+        urls(uiAssetRequest: { width: 264, height: 264 })
+      }
+    }
+    tracks {
+      track {
+        ...TrackFields
+      }
+    }
+  }
+}
