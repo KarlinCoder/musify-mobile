@@ -9,7 +9,7 @@ interface Props {
 
 export default function Navbar({ showSidebar, onShowSidebar }: Props) {
   return (
-    <View className="flex flex-row justify-between py-2 px-2 items-center w-full bg-background border-b border-white/0">
+    <View className="flex flex-row justify-between py-5 px-3 items-center w-full bg-background border-b border-white/0">
       <View className="flex flex-row items-center justify-start gap-1">
         <Pressable
           onPress={onShowSidebar}
@@ -30,7 +30,7 @@ export default function Navbar({ showSidebar, onShowSidebar }: Props) {
 
         <Image source={require("../assets/logo.webp")} />
 
-        <Text className="font-primary text-4xl text-text">Musify</Text>
+        <Text className="font-primary text-4xl text-white">Musify</Text>
       </View>
     </View>
   );
