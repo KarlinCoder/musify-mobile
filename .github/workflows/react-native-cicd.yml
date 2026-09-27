@@ -120,6 +120,7 @@ jobs:
           eas build --platform android --profile development --local --non-interactive --output=./app-dev.apk
         env:
           NODE_ENV: development
+          EAS_SKIP_AUTO_FINGERPRINT: 1
 
       - name: 🏷️ Generate build information
         id: build-info
