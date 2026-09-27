@@ -4,7 +4,7 @@ const tracks: MFTrack[] = [
     title: "Dance Monkey",
     artists: [{ id: "1093675", name: "Tones and I" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/3135556/500x500.jpg",
-    duration_ms: 210000,
+    duration: 210,
     explicit_lyrics: false,
   },
   {
@@ -12,7 +12,7 @@ const tracks: MFTrack[] = [
     title: "Believer",
     artists: [{ id: "298", name: "Imagine Dragons" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/853484/500x500.jpg",
-    duration_ms: 203000,
+    duration: 203,
     explicit_lyrics: false,
   },
   {
@@ -20,7 +20,7 @@ const tracks: MFTrack[] = [
     title: "Blinding Lights",
     artists: [{ id: "1509254", name: "The Weeknd" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/6802194/500x500.jpg",
-    duration_ms: 200000,
+    duration: 200,
     explicit_lyrics: false,
   },
   {
@@ -31,7 +31,7 @@ const tracks: MFTrack[] = [
       { id: "484", name: "Daft Punk" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/2926367/500x500.jpg",
-    duration_ms: 230000,
+    duration: 230,
     explicit_lyrics: true,
   },
   {
@@ -43,7 +43,7 @@ const tracks: MFTrack[] = [
       { id: "1145471", name: "Kyla" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/746674/500x500.jpg",
-    duration_ms: 194000,
+    duration: 194,
     explicit_lyrics: false,
   },
   {
@@ -51,7 +51,7 @@ const tracks: MFTrack[] = [
     title: "God's Plan",
     artists: [{ id: "134", name: "Drake" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/960728/500x500.jpg",
-    duration_ms: 198000,
+    duration: 198,
     explicit_lyrics: true,
   },
   {
@@ -62,7 +62,7 @@ const tracks: MFTrack[] = [
       { id: "130262", name: "Bradley Cooper" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/129908040/500x500.jpg",
-    duration_ms: 216000,
+    duration: 216,
     explicit_lyrics: false,
   },
   {
@@ -73,7 +73,7 @@ const tracks: MFTrack[] = [
       { id: "123", name: "Billy Ray Cyrus" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/839470/500x500.jpg",
-    duration_ms: 157000,
+    duration: 157,
     explicit_lyrics: true,
   },
   {
@@ -84,7 +84,7 @@ const tracks: MFTrack[] = [
       { id: "694852", name: "Swae Lee" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/903237/500x500.jpg",
-    duration_ms: 158000,
+    duration: 158,
     explicit_lyrics: false,
   },
   {
@@ -92,7 +92,7 @@ const tracks: MFTrack[] = [
     title: "Someone You Loved",
     artists: [{ id: "1304552", name: "Lewis Capaldi" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/758107/500x500.jpg",
-    duration_ms: 182000,
+    duration: 182,
     explicit_lyrics: false,
   },
   {
@@ -103,7 +103,7 @@ const tracks: MFTrack[] = [
       { id: "412", name: "Camila Cabello" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/884927/500x500.jpg",
-    duration_ms: 190000,
+    duration: 190,
     explicit_lyrics: false,
   },
   {
@@ -111,7 +111,7 @@ const tracks: MFTrack[] = [
     title: "Bad Guy",
     artists: [{ id: "778266", name: "Billie Eilish" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/722793/500x500.jpg",
-    duration_ms: 194000,
+    duration: 194,
     explicit_lyrics: true,
   },
   {
@@ -119,7 +119,7 @@ const tracks: MFTrack[] = [
     title: "Memories",
     artists: [{ id: "2191", name: "Maroon 5" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/850822/500x500.jpg",
-    duration_ms: 189000,
+    duration: 189,
     explicit_lyrics: false,
   },
   {
@@ -127,7 +127,7 @@ const tracks: MFTrack[] = [
     title: "Don't Start Now",
     artists: [{ id: "403", name: "Dua Lipa" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/868391/500x500.jpg",
-    duration_ms: 183000,
+    duration: 183,
     explicit_lyrics: false,
   },
   {
@@ -138,7 +138,7 @@ const tracks: MFTrack[] = [
       { id: "521", name: "Megan Thee Stallion" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/860367/500x500.jpg",
-    duration_ms: 187000,
+    duration: 187,
     explicit_lyrics: true,
   },
   {
@@ -149,7 +149,7 @@ const tracks: MFTrack[] = [
       { id: "1122", name: "Iann Dior" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/895234/500x500.jpg",
-    duration_ms: 140000,
+    duration: 140,
     explicit_lyrics: true,
   },
   {
@@ -157,7 +157,7 @@ const tracks: MFTrack[] = [
     title: "Positions",
     artists: [{ id: "412", name: "Ariana Grande" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/908421/500x500.jpg",
-    duration_ms: 172000,
+    duration: 172,
     explicit_lyrics: true,
   },
   {
@@ -168,7 +168,7 @@ const tracks: MFTrack[] = [
       { id: "1123325", name: "DaBaby" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/912876/500x500.jpg",
-    duration_ms: 203000,
+    duration: 203,
     explicit_lyrics: false,
   },
   {
@@ -176,7 +176,7 @@ const tracks: MFTrack[] = [
     title: "Circles",
     artists: [{ id: "4174", name: "Post Malone" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/845215/500x500.jpg",
-    duration_ms: 215000,
+    duration: 215,
     explicit_lyrics: false,
   },
   {
@@ -184,7 +184,7 @@ const tracks: MFTrack[] = [
     title: "Ransom",
     artists: [{ id: "620452", name: "Lil Tecca" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/771532/500x500.jpg",
-    duration_ms: 131000,
+    duration: 131,
     explicit_lyrics: true,
   },
   {
@@ -192,7 +192,7 @@ const tracks: MFTrack[] = [
     title: "Drivers License",
     artists: [{ id: "880233", name: "Olivia Rodrigo" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/937415/500x500.jpg",
-    duration_ms: 242000,
+    duration: 242,
     explicit_lyrics: false,
   },
   {
@@ -204,7 +204,7 @@ const tracks: MFTrack[] = [
       { id: "484", name: "Daniel Caesar" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/939987/500x500.jpg",
-    duration_ms: 198000,
+    duration: 198,
     explicit_lyrics: true,
   },
   {
@@ -215,7 +215,7 @@ const tracks: MFTrack[] = [
       { id: "120202", name: "SZA" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/951234/500x500.jpg",
-    duration_ms: 208000,
+    duration: 208,
     explicit_lyrics: true,
   },
   {
@@ -226,7 +226,7 @@ const tracks: MFTrack[] = [
       { id: "220339", name: "Justin Bieber" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/984512/500x500.jpg",
-    duration_ms: 141000,
+    duration: 141,
     explicit_lyrics: true,
   },
   {
@@ -234,7 +234,7 @@ const tracks: MFTrack[] = [
     title: "Good 4 U",
     artists: [{ id: "880233", name: "Olivia Rodrigo" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/998761/500x500.jpg",
-    duration_ms: 178000,
+    duration: 178,
     explicit_lyrics: true,
   },
   {
@@ -242,7 +242,7 @@ const tracks: MFTrack[] = [
     title: "Heat Waves",
     artists: [{ id: "112233", name: "Glass Animals" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1002018/500x500.jpg",
-    duration_ms: 239000,
+    duration: 239,
     explicit_lyrics: false,
   },
   {
@@ -250,7 +250,7 @@ const tracks: MFTrack[] = [
     title: "Beggin'",
     artists: [{ id: "114455", name: "Måneskin" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1011176/500x500.jpg",
-    duration_ms: 211000,
+    duration: 211,
     explicit_lyrics: true,
   },
   {
@@ -261,7 +261,7 @@ const tracks: MFTrack[] = [
       { id: "1066", name: "Jack Harlow" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1023397/500x500.jpg",
-    duration_ms: 212000,
+    duration: 212,
     explicit_lyrics: true,
   },
   {
@@ -269,7 +269,7 @@ const tracks: MFTrack[] = [
     title: "Montero (Call Me By Your Name)",
     artists: [{ id: "6081484", name: "Lil Nas X" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1033498/500x500.jpg",
-    duration_ms: 138000,
+    duration: 138,
     explicit_lyrics: true,
   },
   {
@@ -277,7 +277,7 @@ const tracks: MFTrack[] = [
     title: "Easy On Me",
     artists: [{ id: "488", name: "Adele" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1055411/500x500.jpg",
-    duration_ms: 224000,
+    duration: 224,
     explicit_lyrics: false,
   },
   {
@@ -288,7 +288,7 @@ const tracks: MFTrack[] = [
       { id: "403", name: "Dua Lipa" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1066544/500x500.jpg",
-    duration_ms: 203000,
+    duration: 203,
     explicit_lyrics: false,
   },
   {
@@ -296,7 +296,7 @@ const tracks: MFTrack[] = [
     title: "Bad Habits",
     artists: [{ id: "1510500", name: "Ed Sheeran" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1079333/500x500.jpg",
-    duration_ms: 231000,
+    duration: 231,
     explicit_lyrics: false,
   },
   {
@@ -307,7 +307,7 @@ const tracks: MFTrack[] = [
       { id: "143333", name: "JID" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1088764/500x500.jpg",
-    duration_ms: 173000,
+    duration: 173,
     explicit_lyrics: true,
   },
   {
@@ -315,7 +315,7 @@ const tracks: MFTrack[] = [
     title: "First Class",
     artists: [{ id: "716606", name: "Jack Harlow" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1093201/500x500.jpg",
-    duration_ms: 173000,
+    duration: 173,
     explicit_lyrics: true,
   },
   {
@@ -323,7 +323,7 @@ const tracks: MFTrack[] = [
     title: "As It Was",
     artists: [{ id: "762333", name: "Harry Styles" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1201305/500x500.jpg",
-    duration_ms: 167000,
+    duration: 167,
     explicit_lyrics: false,
   },
   {
@@ -331,7 +331,7 @@ const tracks: MFTrack[] = [
     title: "Running Up That Hill",
     artists: [{ id: "39157", name: "Kate Bush" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1211320/500x500.jpg",
-    duration_ms: 300000,
+    duration: 300,
     explicit_lyrics: false,
   },
   {
@@ -339,7 +339,7 @@ const tracks: MFTrack[] = [
     title: "About Damn Time",
     artists: [{ id: "1248", name: "Lizzo" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1292827/500x500.jpg",
-    duration_ms: 191000,
+    duration: 191,
     explicit_lyrics: true,
   },
   {
@@ -347,7 +347,7 @@ const tracks: MFTrack[] = [
     title: "Numb Little Bug",
     artists: [{ id: "157111", name: "Em Beihold" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1309388/500x500.jpg",
-    duration_ms: 174000,
+    duration: 174,
     explicit_lyrics: false,
   },
   {
@@ -355,7 +355,7 @@ const tracks: MFTrack[] = [
     title: "I Ain't Worried",
     artists: [{ id: "365555", name: "OneRepublic" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1388899/500x500.jpg",
-    duration_ms: 148000,
+    duration: 148,
     explicit_lyrics: false,
   },
   {
@@ -363,7 +363,7 @@ const tracks: MFTrack[] = [
     title: "Dandelions",
     artists: [{ id: "522111", name: "Ruth B." }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1414709/500x500.jpg",
-    duration_ms: 177000,
+    duration: 177,
     explicit_lyrics: false,
   },
   {
@@ -374,7 +374,7 @@ const tracks: MFTrack[] = [
       { id: "114422", name: "Kim Petras" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1427444/500x500.jpg",
-    duration_ms: 159000,
+    duration: 159,
     explicit_lyrics: true,
   },
   {
@@ -382,7 +382,7 @@ const tracks: MFTrack[] = [
     title: "Anti-Hero",
     artists: [{ id: "23916", name: "Taylor Swift" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1481101/500x500.jpg",
-    duration_ms: 200000,
+    duration: 200,
     explicit_lyrics: true,
   },
   {
@@ -393,7 +393,7 @@ const tracks: MFTrack[] = [
       { id: "38482", name: "Ariana Grande" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1492202/500x500.jpg",
-    duration_ms: 241000,
+    duration: 241,
     explicit_lyrics: true,
   },
   {
@@ -405,7 +405,7 @@ const tracks: MFTrack[] = [
       { id: "355466", name: "21 Savage" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1500901/500x500.jpg",
-    duration_ms: 221000,
+    duration: 221,
     explicit_lyrics: true,
   },
   {
@@ -416,7 +416,7 @@ const tracks: MFTrack[] = [
       { id: "129434", name: "Selena Gomez" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1544332/500x500.jpg",
-    duration_ms: 238000,
+    duration: 238,
     explicit_lyrics: false,
   },
   {
@@ -424,7 +424,7 @@ const tracks: MFTrack[] = [
     title: "Flowers",
     artists: [{ id: "123456", name: "Miley Cyrus" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1577777/500x500.jpg",
-    duration_ms: 200000,
+    duration: 200,
     explicit_lyrics: false,
   },
   {
@@ -432,7 +432,7 @@ const tracks: MFTrack[] = [
     title: "Kill Bill",
     artists: [{ id: "16820", name: "SZA" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1599995/500x500.jpg",
-    duration_ms: 153000,
+    duration: 153,
     explicit_lyrics: true,
   },
   {
@@ -443,7 +443,7 @@ const tracks: MFTrack[] = [
       { id: "855463", name: "Ice Spice" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1622448/500x500.jpg",
-    duration_ms: 151000,
+    duration: 151,
     explicit_lyrics: true,
   },
   {
@@ -454,7 +454,7 @@ const tracks: MFTrack[] = [
       { id: "1021", name: "21 Savage" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1655001/500x500.jpg",
-    duration_ms: 219000,
+    duration: 219,
     explicit_lyrics: true,
   },
   {
@@ -462,7 +462,7 @@ const tracks: MFTrack[] = [
     title: "Tití Me Preguntó",
     artists: [{ id: "610000", name: "Bad Bunny" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1699123/500x500.jpg",
-    duration_ms: 243000,
+    duration: 243,
     explicit_lyrics: true,
   },
   {
@@ -470,7 +470,7 @@ const tracks: MFTrack[] = [
     title: "Vampire",
     artists: [{ id: "880233", name: "Olivia Rodrigo" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/1722888/500x500.jpg",
-    duration_ms: 219000,
+    duration: 219,
     explicit_lyrics: true,
   },
 ];
@@ -1500,7 +1500,7 @@ const albumPageTracks: MFTrack[] = [
       { id: "484", name: "Daft Punk" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/132354831/500x500.jpg",
-    duration_ms: 230000,
+    duration: 230,
     explicit_lyrics: true,
   },
   {
@@ -1508,7 +1508,7 @@ const albumPageTracks: MFTrack[] = [
     title: "Party Monster",
     artists: [{ id: "1509254", name: "The Weeknd" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/132354831/500x500.jpg",
-    duration_ms: 243000,
+    duration: 243,
     explicit_lyrics: true,
   },
   {
@@ -1516,7 +1516,7 @@ const albumPageTracks: MFTrack[] = [
     title: "False Alarm",
     artists: [{ id: "1509254", name: "The Weeknd" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/132354831/500x500.jpg",
-    duration_ms: 220000,
+    duration: 220,
     explicit_lyrics: true,
   },
   {
@@ -1524,7 +1524,7 @@ const albumPageTracks: MFTrack[] = [
     title: "Reminder",
     artists: [{ id: "1509254", name: "The Weeknd" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/132354831/500x500.jpg",
-    duration_ms: 219000,
+    duration: 219,
     explicit_lyrics: true,
   },
   {
@@ -1532,7 +1532,7 @@ const albumPageTracks: MFTrack[] = [
     title: "Secrets",
     artists: [{ id: "1509254", name: "The Weeknd" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/132354831/500x500.jpg",
-    duration_ms: 263000,
+    duration: 263,
     explicit_lyrics: false,
   },
   {
@@ -1540,7 +1540,7 @@ const albumPageTracks: MFTrack[] = [
     title: "Rockin'",
     artists: [{ id: "1509254", name: "The Weeknd" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/132354831/500x500.jpg",
-    duration_ms: 212000,
+    duration: 212,
     explicit_lyrics: true,
   },
   {
@@ -1548,7 +1548,7 @@ const albumPageTracks: MFTrack[] = [
     title: "Die For You",
     artists: [{ id: "1509254", name: "The Weeknd" }],
     image_url: "https://cdns-images.dzcdn.net/images/cover/132354831/500x500.jpg",
-    duration_ms: 260000,
+    duration: 260,
     explicit_lyrics: true,
   },
   {
@@ -1559,7 +1559,7 @@ const albumPageTracks: MFTrack[] = [
       { id: "484", name: "Daft Punk" },
     ],
     image_url: "https://cdns-images.dzcdn.net/images/cover/132354831/500x500.jpg",
-    duration_ms: 269000,
+    duration: 269,
     explicit_lyrics: false,
   },
 ];

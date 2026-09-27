@@ -6,7 +6,8 @@ interface MFTrack {
     name: string;
   }[];
   image_url: string;
-  duration_ms: number;
+  /** Duración de la pista en segundos */
+  duration: number;
   explicit_lyrics: boolean;
 }
 

@@ -3,8 +3,10 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "dependencies": {
-    "@expo/ui": "~57.0.16",
+    "@expo/ui": "~57.0.19",
     "@expo/vector-icons": "^15.1.1",
+    "@preeternal/react-native-cookie-manager": "^7.0.0",
+    "@react-navigation/drawer": "^7.14.2",
     "axios": "^1.20.0",
     "babel-plugin-import-graphql": "^2.8.1",
     "browser-id3-writer": "^6.4.0",
@@ -32,12 +34,10 @@
     "graphql": "^17.0.2",
     "jpeg-js": "^0.4.4",
     "jwt-decode": "^4.0.0",
-    "nativewind": "5.0.0-preview.4",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.86.3",
     "react-native-background-task": "^0.2.1",
-    "react-native-css": "^3.0.7",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^3.3.0",
     "react-native-reanimated": "4.5.1",
@@ -47,10 +47,10 @@
     "react-native-track-player": "^4.1.2",
     "react-native-web": "~0.21.0",
     "react-native-worklets": "0.10.1",
-    "rn-fetch-blob": "^0.12.0"
+    "rn-fetch-blob": "^0.12.0",
+    "uniwind": "^1.12.0"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.3.3",
     "@types/react": "~19.2.2",
     "babel-preset-expo": "^57.0.10",
     "eslint": "^9.39.5",

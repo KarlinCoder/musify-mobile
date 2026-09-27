@@ -2,3 +2,6 @@ export const API_URL = "http://localhost:300";
 
 export const DEEZER_ARL =
   "2dd9cd96d9272cd665d73dcae22d9da7540bdd1df335926e3110bb75542dafc90fa6c553af53b01085fbcd583a4e5d2e6ee8589b871bd93db1b2f8c2d8167ec99c4a9e80b29bcb34b6985aabbd06966014049ae4ba95f83d8e2a9db8de89650e";
+
+export const IMAGE_PLACEHOLDER_HASH =
+  "|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[";

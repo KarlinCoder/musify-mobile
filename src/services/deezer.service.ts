@@ -15,7 +15,7 @@ import {
   mockGetSimilarArtists,
 } from "../../mock-data";
 
-const MOCK_DELAY_MS = 4000;
+const MOCK_DELAY_MS = 1000;
 
 function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -58,9 +58,7 @@ export const getTrack = async (trackId: string): Promise<MFTrackPage> => {
   return mockGetTrack;
 };
 
-export const getTrackPreview = async (
-  trackId: string,
-): Promise<string> => {
+export const getTrackPreview = async (trackId: string): Promise<string> => {
   await delay(MOCK_DELAY_MS);
   return mockGetTrackPreview;
 };

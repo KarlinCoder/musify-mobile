@@ -59,7 +59,36 @@
           "hidden": false,
           "style": "dark"
         }
-      ]
+      ],
+      [
+        "expo-font",
+        {
+          "fonts": [
+            {
+              "fontFamily": "SpotifyMix",
+              "fontDefinitions": [
+                {
+                  "path": "./src/assets/fonts/SpotifyMix-Bold.ttf",
+                  "weight": 700
+                },
+                {
+                  "path": "./src/assets/fonts/SpotifyMix-Medium.ttf",
+                  "weight": 500
+                },
+                {
+                  "path": "./src/assets/fonts/SpotifyMix-Regular.ttf",
+                  "weight": 400
+                },
+                {
+                  "path": "./src/assets/fonts/SpotifyMix-Mono.ttf",
+                  "weight": 400
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "@preeternal/react-native-cookie-manager"
     ],
     "experiments": {
       "typedRoutes": true,

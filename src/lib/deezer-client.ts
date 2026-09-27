@@ -51,25 +51,25 @@ export class DeezerClient {
         return this.jwt;
       }
 
-      //   const { data } = await axios.post(AUTH_URL, null, {
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //       Cookie: `arl=${this.arl}`,
-      //     },
-      //     withCredentials: true,
-      //     proxy: PROXY,
-      //   });
-
-      const res = await fetch(AUTH_URL, {
-        method: "POST",
-        credentials: "omit",
+      const { data } = await axios.post(AUTH_URL, null, {
         headers: {
           "Content-Type": "application/json",
           Cookie: `arl=${this.arl}`,
         },
+        withCredentials: true,
+        proxy: PROXY,
       });
 
-      const data = await res.json();
+      // const res = await fetch(AUTH_URL, {
+      //   method: "POST",
+      //   credentials: "omit",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Cookie: `arl=${this.arl}`,
+      //   },
+      // });
+
+      // const data = await res.json();
 
       console.log(data);
 

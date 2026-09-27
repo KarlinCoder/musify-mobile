@@ -1,21 +1,48 @@
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/preflight.css" layer(base);
-@import "tailwindcss/utilities.css";
-
-@import "nativewind/theme";
+@import "tailwindcss";
+@import "uniwind";
 
 @theme {
-  --color-primary: oklch(0.4 0.9 200);
-  --color-secondary: oklch(0.35 0.9 200);
+  --color-primary: #007a99;
+  --color-secondary: #006b85;
 
-  --color-background-dark: oklch(0% 0 0);
-  --color-background: oklch(15.5% 0 0);
-  --color-background-light: oklch(20% 0 0);
+  --color-background-dark: #000000;
+  --color-background: #0a0a0a;
+  --color-background-light: #0d0d0d;
 
-  --color-text: oklch(90% 0 0);
-  --color-text-muted: oklch(70% 0 0);
+  --color-text: #e5e5e5;
+  --color-text-muted: #b3b3b3;
 
-  --font-primary: "Deezer Product Bold";
-  --font-secondary: "Spotify Text";
-  --font-monospace: "Spotify Mono";
+  --font-spotifymix-bold: "SpotifyMix-Bold";
+  --font-spotifymix-medium: "SpotifyMix-Medium";
+  --font-spotifymix-regular: "SpotifyMix-Regular";
+  --font-spotifymix-mono: "SpotifyMix-Mono";
+}
+
+* {
+  @apply font-spotifymix-regular;
+}
+
+@utility text-sm {
+  @apply text-[14px];
+  /* @apply text-base; */
+}
+
+@utility font-title {
+  @apply font-spotifymix-bold;
+}
+
+@utility font-subtitle {
+  @apply font-spotifymix-medium;
+}
+
+@utility font-text {
+  @apply font-spotifymix-regular;
+}
+
+@utility font-mono {
+  @apply font-spotifymix-mono;
+}
+
+@utility font-monospace {
+  @apply font-spotifymix-mono;
 }
