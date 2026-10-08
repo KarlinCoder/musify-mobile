@@ -46,6 +46,7 @@ const menuLinks = [
   { icon: "box-archive", label: "Guardado", url: "/vault" as Href },
   { icon: "gear", label: "Ajustes", url: "/ajustes" as Href },
   { icon: "circle-info", label: "Sobre", url: "/ajustes" as Href },
+  { icon: "circle-info", label: "Proxy", url: "proxy-test" as Href },
 ];
 
 export default function Sidebar() {
