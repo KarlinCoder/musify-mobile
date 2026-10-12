@@ -92,12 +92,11 @@ class ExpoAppProxyModule : Module() {
   }
 
   private fun applyClient(client: OkHttpClient) {
+    // React Native resolves all HTTP clients through this factory, so registering
+    // it here makes the proxy-configured client the one used for networking.
     OkHttpClientProvider.setOkHttpClientFactory {
       client
     }
-
-    // Replace the shared client as well, in case it was already created.
-    OkHttpClientProvider.replaceOkHttpClient(client)
   }
 
   override fun definition() = ModuleDefinition {

@@ -16,3 +16,8 @@ android {
     abortOnError false
   }
 }
+
+dependencies {
+  implementation 'com.facebook.react:react-android'
+  implementation "com.squareup.okhttp3:okhttp:${expoModule.safeExtGet("okHttpVersion", '4.9.2')}"
+}
