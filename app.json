@@ -28,6 +28,12 @@
     },
     "plugins": [
       [
+        "expo-audio",
+        {
+          "enableBackgroundPlayback": true
+        }
+      ],
+      [
         "expo-navigation-bar",
         {
           "enforceContrast": true,
@@ -52,14 +58,17 @@
           "imageWidth": 76
         }
       ],
-
       [
         "expo-status-bar",
         {
           "hidden": false,
           "style": "dark"
         }
-      ]
+      ],
+      "expo-font",
+      "expo-image",
+      "expo-web-browser",
+      "expo-audio"
     ],
     "experiments": {
       "typedRoutes": true,
