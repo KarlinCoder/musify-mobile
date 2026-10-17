@@ -1,0 +1,20 @@
+# Get the current user's favorite albums (paginated).
+
+query GetFavoriteAlbums($first: Int = 50, $after: String) {
+  me {
+    userFavorites {
+      albums(first: $first, after: $after) {
+        edges {
+          cursor
+          favoritedAt
+          node {
+            ...AlbumFields
+          }
+        }
+        pageInfo {
+          ...PageInfoFields
+        }
+      }
+    }
+  }
+}

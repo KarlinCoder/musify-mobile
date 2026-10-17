@@ -1,0 +1,37 @@
+{
+  "name": "deezer-sdk",
+  "version": "1.0.0",
+  "description": "Cliente no oficial de la API GraphQL de Deezer (pipe.deezer.com)",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "codegen": "graphql-codegen --config src/codegen.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "@graphql-typed-document-node/core": "^3.2.0",
+    "axios": "^1.7.0",
+    "buffer": "^6.0.3",
+    "deezer-arl": "workspace:*",
+    "graphql": "^17.0.2",
+    "graphql-request": "^7.4.0",
+    "graphql-tag": "^2.12.7"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^7.4.4",
+    "@graphql-codegen/typed-document-node": "^7.1.1",
+    "@graphql-codegen/typescript": "^6.1.1",
+    "@graphql-codegen/typescript-operations": "^6.1.10",
+    "@types/node": "^26.6.2",
+    "typescript": "^5.7.3"
+  }
+}

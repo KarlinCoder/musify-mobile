@@ -1,19 +1,24 @@
 # Welcome to your Expo app 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app), organized as a pnpm monorepo.
+
+## Structure
+
+- `apps/mobile` — the Expo app.
+- `packages/*` — shared TypeScript packages consumed from source (`deezer-arl`, `deezer-sdk`, `deezer-downloader`).
 
 ## Get started
 
-1. Install dependencies
+1. Install dependencies (from the repo root)
 
    ```bash
-   npm install
+   pnpm install
    ```
 
 2. Start the app
 
    ```bash
-   npx expo start
+   pnpm start
    ```
 
 In the output, you'll find options to open the app in a
