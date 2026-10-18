@@ -55,10 +55,12 @@ class ExpoAppProxyModule : Module() {
     username: String? = null,
     password: String? = null
   ): OkHttpClient {
-    val builder = OkHttpClient.Builder()
-      .connectTimeout(15, TimeUnit.SECONDS)
-      .readTimeout(15, TimeUnit.SECONDS)
-      .writeTimeout(15, TimeUnit.SECONDS)
+    val context = appContext.reactContext?.applicationContext
+    val builder = context?.let {
+      OkHttpClientProvider.createClientBuilder(it)
+    } ?: OkHttpClientProvider.createClientBuilder()
+
+    builder.connectTimeout(15, TimeUnit.SECONDS)
 
     if (proxy != null) {
       builder.proxy(proxy)

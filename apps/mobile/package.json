@@ -5,7 +5,6 @@
   "dependencies": {
     "@expo/ui": "~57.0.23",
     "@expo/vector-icons": "^15.1.1",
-    "@preeternal/react-native-cookie-manager": "^7.0.0",
     "@react-navigation/drawer": "^7.14.2",
     "axios": "^1.20.0",
     "babel-plugin-import-graphql": "^2.8.1",
