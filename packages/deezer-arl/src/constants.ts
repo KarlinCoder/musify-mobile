@@ -1,4 +1,4 @@
-export const PROXY = "http://ympyzbfs:mqw3jdcuuzvw@38.154.185.97:6370";
+export const PROXY_URL = "https://musify-proxy.api.karlincoder.com";
 export const APP_NAME = "Deezer";
 export const APPLICATION_ID = 632384;
 export const GATEAWAY_API = "https://fr-www.deezer.com/ajax/gw-light.php";

@@ -1,3 +1,4 @@
+import { getDeezerTokens } from "deezer-arl";
 import { useEffect, useState } from "react";
 import { Alert, Pressable, Text, View } from "react-native";
 import expoAppProxy, { type ProxyConfig } from "../../modules/expo-app-proxy";
@@ -15,6 +16,7 @@ const TEST_URL = "http://ip-api.com/json/";
 
 export default function ProxyTestScreen() {
   const [loading, setLoading] = useState(false);
+  const [generatingArl, setGeneratingArl] = useState(false);
 
   useEffect(() => {
     try {
@@ -40,6 +42,18 @@ export default function ProxyTestScreen() {
     }
   };
 
+  const handleGenerateArl = async () => {
+    setGeneratingArl(true);
+    try {
+      const result = await getDeezerTokens();
+      Alert.alert("ARL generado", String(result?.arl ?? JSON.stringify(result)));
+    } catch (error: any) {
+      Alert.alert("Error al generar ARL", error?.message ?? String(error));
+    } finally {
+      setGeneratingArl(false);
+    }
+  };
+
   return (
     <View className="flex-1 items-center justify-center gap-4 bg-background p-6">
       <Text className="font-title text-3xl text-text-primary">
@@ -57,6 +71,15 @@ export default function ProxyTestScreen() {
       >
         <Text className="font-secondary text-base text-white">
           {loading ? "Cargando..." : "Hacer petición"}
+        </Text>
+      </Pressable>
+      <Pressable
+        onPress={handleGenerateArl}
+        disabled={generatingArl}
+        className="rounded-full bg-primary px-6 py-3 active:opacity-80 disabled:opacity-50"
+      >
+        <Text className="font-secondary text-base text-white">
+          {generatingArl ? "Generando ARL..." : "Generar ARL"}
         </Text>
       </Pressable>
     </View>

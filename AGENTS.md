@@ -20,7 +20,7 @@
 
 ## Packages
 
-- `packages/deezer-arl` — creates a temporary Deezer account (autolog) and returns its ARL. Deps: axios, socks-proxy-agent. Uses Node `crypto`.
+- `packages/deezer-arl` — creates a temporary Deezer account (autolog) and returns its ARL. Deps: axios. Uses Node `crypto`.
 - `packages/deezer-sdk` — unofficial client for Deezer's GraphQL API (pipe.deezer.com). Depends on `deezer-arl`. Regenerate types with `pnpm --dir packages/deezer-sdk codegen`.
 - `packages/deezer-downloader` — downloads and decrypts tracks by ID (Node `fs`/`https`/`stream`). Depends on `deezer-sdk`.
 - Packages expose TypeScript sources directly (`exports` → `./src/index.ts`); Metro transpiles them — there is no build step.

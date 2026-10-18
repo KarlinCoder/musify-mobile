@@ -1,6 +1,5 @@
 import { Buffer } from "buffer";
-import type { AxiosInstance } from "axios";
-import { createHttpClient } from "deezer-arl";
+import axios, { type AxiosInstance } from "axios";
 
 const AUTH_URL = "https://auth.deezer.com/login/arl?jo=p&rto=c&i=c";
 const API_URL = "https://pipe.deezer.com/api";
@@ -31,7 +30,6 @@ function maskJwt(jwt: string): string {
 
 export interface DeezerClientOptions {
   showLogs?: boolean;
-  proxy?: string;
 }
 
 export class DeezerClient {
@@ -43,7 +41,7 @@ export class DeezerClient {
   private readonly refreshMarginSeconds = 30;
   private readonly logPayloads: boolean;
 
-  /** Adaptador WHATWG fetch que usa el mismo http client (y proxy). */
+  /** Adaptador WHATWG fetch que usa el mismo http client. */
   fetch: typeof fetch;
 
   constructor(
@@ -57,7 +55,9 @@ export class DeezerClient {
     }
 
     this.logPayloads = options.showLogs ?? false;
-    this.http = createHttpClient(options.proxy);
+    this.http = axios.create({
+      validateStatus: () => true,
+    });
 
     this.fetch = async (input, init) => {
       const url =
@@ -225,9 +225,8 @@ export class DeezerClient {
 
 /**
  * Crea un cliente. El ARL es obligatoria y es la credencial de la sesión.
- * El proxy es opcional; si se pasa, todas las peticiones (auth y GraphQL) lo usan.
  *
- *   const client = createDeezerClient(process.env.DEEZER_ARL, { proxy });
+ *   const client = createDeezerClient(process.env.DEEZER_ARL);
  *   await client.run(print(getArtist), { artistId: "416239" });
  */
 export function createDeezerClient(

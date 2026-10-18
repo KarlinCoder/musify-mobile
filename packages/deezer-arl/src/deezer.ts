@@ -113,5 +113,5 @@ export const createDeezerAccount = async (http: AxiosInstance) => {
   if (!arl) throw new DeezerError("Cuenta creada pero sin ARL en la respuesta");
 
   logMessage("Cuenta de Deezer creada correctamente.");
-  return result;
+  return { ...result, arl };
 };

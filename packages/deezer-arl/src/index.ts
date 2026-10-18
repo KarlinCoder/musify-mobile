@@ -1,9 +1,19 @@
-import { PROXY } from "./constants";
+import axios from "axios";
+import { PROXY_URL, USER_AGENT } from "./constants";
 import { createDeezerAccount } from "./deezer";
 import { DzArlError } from "./errors";
-import { createHttpClient } from "./proxy";
 
-const http = createHttpClient(PROXY);
+const http = axios.create({
+  validateStatus: () => true,
+  headers: { "User-Agent": USER_AGENT, Accept: "application/json" },
+});
+
+http.interceptors.request.use((config) => {
+  if (config.url && /^https?:\/\//.test(config.url)) {
+    config.url = `${PROXY_URL}/?url=${encodeURIComponent(config.url)}`;
+  }
+  return config;
+});
 
 export const getDeezerTokens = async () => {
   try {
@@ -18,4 +28,3 @@ export const getDeezerTokens = async () => {
 
 export * from "./constants";
 export * from "./errors";
-export * from "./proxy";
