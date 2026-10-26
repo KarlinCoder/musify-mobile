@@ -2,47 +2,18 @@
 @import "uniwind";
 
 @theme {
-  --color-primary: #007a99;
-  --color-secondary: #006b85;
+  --color-primary: #1d9bf0;
+  --color-bg: #121212;
+  --color-surface: #1f1f1f;
+  --color-text: #ffffff;
+  --color-muted: #b3b3b3;
 
-  --color-background-dark: #000000;
-  --color-background: #0a0a0a;
-  --color-background-light: #0d0d0d;
-
-  --color-text: #e5e5e5;
-  --color-text-muted: #b3b3b3;
-
-  --font-spotifymix-bold: "SpotifyMix-Bold";
-  --font-spotifymix-medium: "SpotifyMix-Medium";
-  --font-spotifymix-regular: "SpotifyMix-Regular";
-  --font-spotifymix-mono: "SpotifyMix-Mono";
+  --font-spotify-bold: "Spotify Bold";
+  --font-spotify-medium: "Spotify Medium";
+  --font-spotify-regular: "Spotify Regular";
+  --font-spotify-mono: "Spotify Mono";
 }
 
 * {
-  @apply font-spotifymix-regular;
-}
-
-@utility text-sm {
-  @apply text-[14px];
-  /* @apply text-base; */
-}
-
-@utility font-title {
-  @apply font-spotifymix-bold;
-}
-
-@utility font-subtitle {
-  @apply font-spotifymix-medium;
-}
-
-@utility font-text {
-  @apply font-spotifymix-regular;
-}
-
-@utility font-mono {
-  @apply font-spotifymix-mono;
-}
-
-@utility font-monospace {
-  @apply font-spotifymix-mono;
+  @apply font-spotify-regular;
 }

@@ -1,8 +1,4 @@
 import {
-  mockSearchTracks,
-  mockSearchAlbums,
-  mockSearchArtists,
-  mockSearchPlaylists,
   mockGetTrack,
   mockGetTrackPreview,
   mockGetAlbum,
@@ -15,105 +11,178 @@ import {
   mockGetSimilarArtists,
 } from "../../mock-data";
 
-const MOCK_DELAY_MS = 1000;
+import deezer from "deezer-sdk";
+import axios from "axios";
+import { DeezerChartsResponse } from "@/types/deezer-aux";
+import { isOfficialDeezerAuthor } from "@/utils/is-official-plyalist";
 
-function delay(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+// export const search = async (
+//   query: string,
+// ): Promise<> => {
+//   await delay(MOCK_DELAY_MS);
+//   return [];
+// };
 
-export const searchTracks = async (
-  query: string,
-  first?: number,
-): Promise<MFTrack[]> => {
-  await delay(MOCK_DELAY_MS);
-  return mockSearchTracks;
-};
+// export const getTrack = async (trackId: string): Promise<MFTrackPage> => {
+//   try {
+//     const track = await deezer.getTrack({
+//       trackId,
+//     });
 
-export const searchAlbums = async (
-  query: string,
-  first?: number,
-): Promise<MFAlbum[]> => {
-  await delay(MOCK_DELAY_MS);
-  return mockSearchAlbums;
-};
+//     return {
+//       albumId: track!.album!.id,
+//       artists: track!.contributors.edges.map((artist) => ({
+//         id: artist.node.id,
+//         name: artist.node.name,
+//       })),
+//       avg_color
+//     };
+//   } catch (error) {
+//     if (error instanceof Error)
+//       throw new Error(`Error en getTrack: "${error.message}"`);
+//   }
+// };
 
-export const searchArtists = async (
-  query: string,
-  first?: number,
-): Promise<MFArtist[]> => {
-  await delay(MOCK_DELAY_MS);
-  return mockSearchArtists;
-};
+// export const getTrackPreview = async (trackId: string): Promise<string> => {
+//   try {
+//   } catch (error) {
+//     if (error instanceof Error)
+//       throw new Error(`Error en : "${error.message}"`);
+//   }
+// };
 
-export const searchPlaylists = async (
-  query: string,
-  first?: number,
-): Promise<MFPlaylist[]> => {
-  await delay(MOCK_DELAY_MS);
-  return mockSearchPlaylists;
-};
+// export const getAlbum = async (albumId: string): Promise<MFAlbumPage> => {
+//   try {
+//   } catch (error) {
+//     if (error instanceof Error)
+//       throw new Error(`Error en : "${error.message}"`);
+//   }
+// };
 
-export const getTrack = async (trackId: string): Promise<MFTrackPage> => {
-  await delay(MOCK_DELAY_MS);
-  return mockGetTrack;
-};
+// export const getArtist = async (artistId: string): Promise<MFArtistPage> => {
+//   try {
+//   } catch (error) {
+//     if (error instanceof Error)
+//       throw new Error(`Error en : "${error.message}"`);
+//   }
+// };
 
-export const getTrackPreview = async (trackId: string): Promise<string> => {
-  await delay(MOCK_DELAY_MS);
-  return mockGetTrackPreview;
-};
+// export const getPlaylist = async (
+//   playlistId: string,
+// ): Promise<MFPlaylistPage> => {
+//   try {
+//   } catch (error) {
+//     if (error instanceof Error)
+//       throw new Error(`Error en : "${error.message}"`);
+//   }
+// };
 
-export const getAlbum = async (albumId: string): Promise<MFAlbumPage> => {
-  await delay(MOCK_DELAY_MS);
-  return mockGetAlbum;
-};
+// export const getCharts = async (): Promise<MFPopular> => {
+//   try {
+//     // console.log(deezer.)
+//     const graphqlCharts = await deezer.getCharts({
+//       albumsFirst: 10,
+//       artistsFirst: 10,
+//       playlistsFirst: 10,
+//       tracksFirst: 10,
+//       countryCode: "es",
+//     });
 
-export const getArtist = async (artistId: string): Promise<MFArtistPage> => {
-  await delay(MOCK_DELAY_MS);
-  return mockGetArtist;
-};
+//     const { data: restCharts } = await axios.get<DeezerChartsResponse>(
+//       `ttps://musify-proxy.api.karlincoder.com/?url=https://api.deezer.com/chart/0`,
+//     );
 
-export const getPlaylist = async (
-  playlistId: string,
-): Promise<MFPlaylistPage> => {
-  await delay(MOCK_DELAY_MS);
-  return mockGetPlaylist;
-};
+//     const mappedResponse: MFPopular = {
+//       tracks:
+//         graphqlCharts?.country?.tracks?.edges.map(({ node: track }) => {
+//           const trackObject: MFTrack = {
+//             id: track!.id ?? "[TRACK_ID]",
+//             albumId: track?.album?.id ?? "[ALBUM_ID]",
+//             artists: track?.contributors.edges.map((artist) => ({
+//               id: artist.node.id,
+//               name: artist.node.name,
+//             }))!,
+//             duration: track!.duration,
+//             explicit_lyrics: track?.isExplicit ?? false,
+//             image_url: track?.album?.cover?.urls[0] ?? null,
+//             title: track!.title,
+//           };
 
-export const getPopular = async (): Promise<MFPopular> => {
-  await delay(MOCK_DELAY_MS);
-  return mockGetPopular;
-};
+//           return trackObject;
+//         }) ?? [],
+//       albums: restCharts.albums.data.map((album) => ({
+//         id: album.id.toString(),
+//         artist: {
+//           id: album.artist.id.toString(),
+//           name: album.artist.name,
+//         },
+//         explicit_lyrics: album.explicit_lyrics,
+//         image_url: album.cover_medium,
+//         record_type: album.record_type,
+//         title: album.title,
+//       })),
+//       artists: restCharts.artists.data.map((artist) => ({
+//         id: artist.id.toString(),
+//         image_url: artist.picture_medium,
+//         name: artist.name,
+//       })),
+//       playlists: restCharts.playlists.data.map((playlist) => ({
+//         id: playlist.id.toString(),
+//         image_url: playlist.picture_medium,
+//         is_official: isOfficialDeezerAuthor(playlist.user.name),
+//         nb_tracks: playlist.nb_tracks,
+//         title: playlist.title,
+//       })),
+//     };
 
-export const getTrackMix = async (
-  trackIds: string[],
-  limit?: number,
-  startWithInputTrack?: boolean,
-): Promise<MFTrack[]> => {
-  await delay(MOCK_DELAY_MS);
-  return mockGetTrackMix;
-};
+//     return mappedResponse;
+//   } catch (error) {
+//     if (error instanceof Error)
+//       throw new Error(`Error obteniendo los Charts: "${error.message}"`);
+//   }
+//   return mockGetPopular;
+// };
 
-export const getArtistMix = async (
-  artistIds: string[],
-  limit?: number,
-): Promise<MFTrack[]> => {
-  await delay(MOCK_DELAY_MS);
-  return mockGetArtistMix;
-};
+// export const getTrackMix = async (
+//   trackIds: string[],
+//   limit?: number,
+// ): Promise<MFTrack[]> => {
+//   try {
+//   } catch (error) {
+//     if (error instanceof Error)
+//       throw new Error(`Error en : "${error.message}"`);
+//   }
+// };
 
-export const getSimilarTracks = async (
-  trackId: string,
-  nb?: number,
-): Promise<MFTrack[]> => {
-  await delay(MOCK_DELAY_MS);
-  return mockGetSimilarTracks;
-};
+// export const getArtistMix = async (
+//   artistIds: string[],
+//   limit?: number,
+// ): Promise<MFTrack[]> => {
+//   try {
+//   } catch (error) {
+//     if (error instanceof Error)
+//       throw new Error(`Error en : "${error.message}"`);
+//   }
+// };
 
-export const getSimilarArtists = async (
-  artistId: string,
-  first?: number,
-): Promise<MFArtist[]> => {
-  await delay(MOCK_DELAY_MS);
-  return mockGetSimilarArtists;
-};
+// export const getSimilarTracks = async (
+//   trackId: string,
+//   nb?: number,
+// ): Promise<MFTrack[]> => {
+//   try {
+//   } catch (error) {
+//     if (error instanceof Error)
+//       throw new Error(`Error en : "${error.message}"`);
+//   }
+// };
+
+// export const getSimilarArtists = async (
+//   artistId: string,
+//   first?: number,
+// ): Promise<MFArtist[]> => {
+//   try {
+//   } catch (error) {
+//     if (error instanceof Error)
+//       throw new Error(`Error en : "${error.message}"`);
+//   }
+// };

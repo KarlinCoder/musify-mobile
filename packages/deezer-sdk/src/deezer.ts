@@ -1,4 +1,10 @@
-import { GraphQLClient } from "graphql-request";
+import type { TypedDocumentNode } from "@graphql-typed-document-node/core";
+import {
+  ClientError,
+  GraphQLClient,
+  type RequestDocument,
+  type Variables,
+} from "graphql-request";
 import {
   AddAlbumToFavoriteDocument,
   AddAlbumToFavoriteMutationVariables,
@@ -136,7 +142,8 @@ import {
 import { createDeezerClient } from "./graphql-client";
 import { DeezerError } from "./errors";
 
-const arl = process.env.DEEZER_ARL ??
+const arl =
+  process.env.DEEZER_ARL ??
   "2dd9cd96d9272cd665d73dcae22d9da7540bdd1df335926e3110bb75542dafc90fa6c553af53b01085fbcd583a4e5d2e6ee8589b871bd93db1b2f8c2d8167ec99c4a9e80b29bcb34b6985aabbd06966014049ae4ba95f83d8e2a9db8de89650e";
 
 const auth = createDeezerClient(arl, {
@@ -153,9 +160,47 @@ const client = new GraphQLClient("https://pipe.deezer.com/api", {
   },
 });
 
+/**
+ * Deezer devuelve errores de resolución para ítems concretos
+ * (`Album does not exist`, `User profile access is not allowed`) junto con el
+ * resto de datos válidos. En ese caso se usa la respuesta parcial; solo se
+ * propaga el error cuando no queda ningún dato utilizable.
+ */
+async function request<TData>(
+  document: TypedDocumentNode<TData, never>,
+  variables: Variables = {},
+): Promise<TData> {
+  try {
+    return await client.request<TData>(
+      document as unknown as RequestDocument,
+      variables,
+    );
+  } catch (error) {
+    if (error instanceof ClientError) {
+      const data = error.response.data as TData | undefined;
+
+      if (
+        data &&
+        typeof data === "object" &&
+        Object.values(data).some((value) => value != null)
+      ) {
+        const messages = error.response.errors
+          ?.map((item) => item.message)
+          .join("; ");
+
+        console.warn(`⚠️ pipe.deezer.com: ${messages}`);
+
+        return data;
+      }
+    }
+
+    throw error;
+  }
+}
+
 export const getAlbum = async (variables: GetAlbumQueryVariables) => {
   try {
-    const { album } = await client.request(GetAlbumDocument, variables);
+    const { album } = await request(GetAlbumDocument, variables);
     return album;
   } catch (error) {
     throw new DeezerError("Error obteniendo el álbum");
@@ -164,7 +209,7 @@ export const getAlbum = async (variables: GetAlbumQueryVariables) => {
 
 export const getArtist = async (variables: GetArtistQueryVariables) => {
   try {
-    const { artist } = await client.request(GetArtistDocument, variables);
+    const { artist } = await request(GetArtistDocument, variables);
     return artist;
   } catch (error) {
     throw new DeezerError("Error obteniendo el artista");
@@ -173,7 +218,7 @@ export const getArtist = async (variables: GetArtistQueryVariables) => {
 
 export const getArtistMix = async (variables: GetArtistMixQueryVariables) => {
   try {
-    const { artistMix } = await client.request(GetArtistMixDocument, variables);
+    const { artistMix } = await request(GetArtistMixDocument, variables);
     return artistMix;
   } catch (error) {
     throw new DeezerError("Error obteniendo el mix de artistas");
@@ -182,7 +227,7 @@ export const getArtistMix = async (variables: GetArtistMixQueryVariables) => {
 
 export const getAudiobook = async (variables: GetAudiobookQueryVariables) => {
   try {
-    const { audiobook } = await client.request(GetAudiobookDocument, variables);
+    const { audiobook } = await request(GetAudiobookDocument, variables);
     return audiobook;
   } catch (error) {
     throw new DeezerError("Error obteniendo el audiolibro");
@@ -193,7 +238,7 @@ export const getAudiobookChapter = async (
   variables: GetAudiobookChapterQueryVariables,
 ) => {
   try {
-    const { audiobookChapter } = await client.request(
+    const { audiobookChapter } = await request(
       GetAudiobookChapterDocument,
       variables,
     );
@@ -205,7 +250,7 @@ export const getAudiobookChapter = async (
 
 export const getCharts = async (variables: GetChartsQueryVariables = {}) => {
   try {
-    const { charts } = await client.request(GetChartsDocument, variables);
+    const { charts } = await request(GetChartsDocument, variables);
     return charts;
   } catch (error) {
     throw new DeezerError("Error obteniendo las listas de éxitos");
@@ -216,7 +261,7 @@ export const getFavoriteAlbums = async (
   variables: GetFavoriteAlbumsQueryVariables = {},
 ) => {
   try {
-    const { me } = await client.request(GetFavoriteAlbumsDocument, variables);
+    const { me } = await request(GetFavoriteAlbumsDocument, variables);
     return me;
   } catch (error) {
     throw new DeezerError("Error obteniendo los álbumes favoritos");
@@ -227,7 +272,7 @@ export const getFavoriteArtists = async (
   variables: GetFavoriteArtistsQueryVariables = {},
 ) => {
   try {
-    const { me } = await client.request(GetFavoriteArtistsDocument, variables);
+    const { me } = await request(GetFavoriteArtistsDocument, variables);
     return me;
   } catch (error) {
     throw new DeezerError("Error obteniendo los artistas favoritos");
@@ -238,7 +283,7 @@ export const getFavoriteAudiobooks = async (
   variables: GetFavoriteAudiobooksQueryVariables = {},
 ) => {
   try {
-    const { me } = await client.request(
+    const { me } = await request(
       GetFavoriteAudiobooksDocument,
       variables,
     );
@@ -252,7 +297,7 @@ export const getFavoritePlaylists = async (
   variables: GetFavoritePlaylistsQueryVariables = {},
 ) => {
   try {
-    const { me } = await client.request(
+    const { me } = await request(
       GetFavoritePlaylistsDocument,
       variables,
     );
@@ -266,7 +311,7 @@ export const getFavoritePodcasts = async (
   variables: GetFavoritePodcastsQueryVariables = {},
 ) => {
   try {
-    const { me } = await client.request(GetFavoritePodcastsDocument, variables);
+    const { me } = await request(GetFavoritePodcastsDocument, variables);
     return me;
   } catch (error) {
     throw new DeezerError("Error obteniendo los podcasts favoritos");
@@ -277,7 +322,7 @@ export const getFavoriteTracks = async (
   variables: GetFavoriteTracksQueryVariables = {},
 ) => {
   try {
-    const { me } = await client.request(GetFavoriteTracksDocument, variables);
+    const { me } = await request(GetFavoriteTracksDocument, variables);
     return me;
   } catch (error) {
     throw new DeezerError("Error obteniendo las canciones favoritas");
@@ -286,7 +331,7 @@ export const getFavoriteTracks = async (
 
 export const getFlow = async (variables: GetFlowQueryVariables = {}) => {
   try {
-    const { me } = await client.request(GetFlowDocument, variables);
+    const { me } = await request(GetFlowDocument, variables);
     return me;
   } catch (error) {
     throw new DeezerError("Error obteniendo el Flow");
@@ -297,7 +342,7 @@ export const getFlowBatch = async (
   variables: GetFlowBatchQueryVariables = {},
 ) => {
   try {
-    const { me } = await client.request(GetFlowBatchDocument, variables);
+    const { me } = await request(GetFlowBatchDocument, variables);
     return me;
   } catch (error) {
     throw new DeezerError("Error obteniendo el Flow por lotes");
@@ -308,7 +353,7 @@ export const getFlowConfigTracks = async (
   variables: GetFlowConfigTracksQueryVariables,
 ) => {
   try {
-    const { flowConfig } = await client.request(
+    const { flowConfig } = await request(
       GetFlowConfigTracksDocument,
       variables,
     );
@@ -322,7 +367,7 @@ export const getFlowConfigs = async (
   variables: GetFlowConfigsQueryVariables = {},
 ) => {
   try {
-    const { me } = await client.request(GetFlowConfigsDocument, variables);
+    const { me } = await request(GetFlowConfigsDocument, variables);
     return me;
   } catch (error) {
     throw new DeezerError("Error obteniendo la configuración de Flows");
@@ -331,7 +376,7 @@ export const getFlowConfigs = async (
 
 export const getLivestream = async (variables: GetLivestreamQueryVariables) => {
   try {
-    const { livestream } = await client.request(
+    const { livestream } = await request(
       GetLivestreamDocument,
       variables,
     );
@@ -345,7 +390,7 @@ export const getMadeForMe = async (
   variables: GetMadeForMeQueryVariables = {},
 ) => {
   try {
-    const { me } = await client.request(GetMadeForMeDocument, variables);
+    const { me } = await request(GetMadeForMeDocument, variables);
     return me;
   } catch (error) {
     throw new DeezerError("Error obteniendo las recomendaciones para ti");
@@ -354,7 +399,7 @@ export const getMadeForMe = async (
 
 export const getMe = async (variables: GetMeQueryVariables = {}) => {
   try {
-    const { me } = await client.request(GetMeDocument, variables);
+    const { me } = await request(GetMeDocument, variables);
     return me;
   } catch (error) {
     throw new DeezerError("Error obteniendo el usuario");
@@ -365,7 +410,7 @@ export const getMusicTogetherAffinity = async (
   variables: GetMusicTogetherAffinityQueryVariables,
 ) => {
   try {
-    const { musicTogetherAffinity } = await client.request(
+    const { musicTogetherAffinity } = await request(
       GetMusicTogetherAffinityDocument,
       variables,
     );
@@ -379,7 +424,7 @@ export const getMusicTogetherGroup = async (
   variables: GetMusicTogetherGroupQueryVariables,
 ) => {
   try {
-    const { musicTogetherGroup } = await client.request(
+    const { musicTogetherGroup } = await request(
       GetMusicTogetherGroupDocument,
       variables,
     );
@@ -393,7 +438,7 @@ export const getMusicTogetherGroups = async (
   variables: GetMusicTogetherGroupsQueryVariables = {},
 ) => {
   try {
-    const { me } = await client.request(
+    const { me } = await request(
       GetMusicTogetherGroupsDocument,
       variables,
     );
@@ -407,7 +452,7 @@ export const getPersonalTracks = async (
   variables: GetPersonalTracksQueryVariables = {},
 ) => {
   try {
-    const { me } = await client.request(GetPersonalTracksDocument, variables);
+    const { me } = await request(GetPersonalTracksDocument, variables);
     return me;
   } catch (error) {
     throw new DeezerError("Error obteniendo las pistas personales");
@@ -416,7 +461,7 @@ export const getPersonalTracks = async (
 
 export const getPlaylist = async (variables: GetPlaylistQueryVariables) => {
   try {
-    const { playlist } = await client.request(GetPlaylistDocument, variables);
+    const { playlist } = await request(GetPlaylistDocument, variables);
     return playlist;
   } catch (error) {
     throw new DeezerError("Error obteniendo la playlist");
@@ -425,7 +470,7 @@ export const getPlaylist = async (variables: GetPlaylistQueryVariables) => {
 
 export const getPodcast = async (variables: GetPodcastQueryVariables) => {
   try {
-    const { podcast } = await client.request(GetPodcastDocument, variables);
+    const { podcast } = await request(GetPodcastDocument, variables);
     return podcast;
   } catch (error) {
     throw new DeezerError("Error obteniendo el podcast");
@@ -436,7 +481,7 @@ export const getPodcastEpisode = async (
   variables: GetPodcastEpisodeQueryVariables,
 ) => {
   try {
-    const { podcastEpisode } = await client.request(
+    const { podcastEpisode } = await request(
       GetPodcastEpisodeDocument,
       variables,
     );
@@ -450,7 +495,7 @@ export const getPodcastEpisodeBookmarks = async (
   variables: GetPodcastEpisodeBookmarksQueryVariables = {},
 ) => {
   try {
-    const { me } = await client.request(
+    const { me } = await request(
       GetPodcastEpisodeBookmarksDocument,
       variables,
     );
@@ -464,7 +509,7 @@ export const getPodcastEpisodesByIds = async (
   variables: GetPodcastEpisodesByIdsQueryVariables,
 ) => {
   try {
-    const { podcastEpisodesByIds } = await client.request(
+    const { podcastEpisodesByIds } = await request(
       GetPodcastEpisodesByIdsDocument,
       variables,
     );
@@ -478,7 +523,7 @@ export const getRecentlyPlayed = async (
   variables: GetRecentlyPlayedQueryVariables = {},
 ) => {
   try {
-    const { me } = await client.request(GetRecentlyPlayedDocument, variables);
+    const { me } = await request(GetRecentlyPlayedDocument, variables);
     return me;
   } catch (error) {
     throw new DeezerError("Error obteniendo lo reproducido recientemente");
@@ -489,7 +534,7 @@ export const getRecommendations = async (
   variables: GetRecommendationsQueryVariables = {},
 ) => {
   try {
-    const { me } = await client.request(GetRecommendationsDocument, variables);
+    const { me } = await request(GetRecommendationsDocument, variables);
     return me;
   } catch (error) {
     throw new DeezerError("Error obteniendo las recomendaciones");
@@ -500,7 +545,7 @@ export const getSimilarArtists = async (
   variables: GetSimilarArtistsQueryVariables,
 ) => {
   try {
-    const { artist } = await client.request(
+    const { artist } = await request(
       GetSimilarArtistsDocument,
       variables,
     );
@@ -514,7 +559,7 @@ export const getSimilarTracks = async (
   variables: GetSimilarTracksQueryVariables,
 ) => {
   try {
-    const { track } = await client.request(GetSimilarTracksDocument, variables);
+    const { track } = await request(GetSimilarTracksDocument, variables);
     return track;
   } catch (error) {
     throw new DeezerError("Error obteniendo las canciones similares");
@@ -525,7 +570,7 @@ export const getSmartTracklist = async (
   variables: GetSmartTracklistQueryVariables,
 ) => {
   try {
-    const { smartTracklist } = await client.request(
+    const { smartTracklist } = await request(
       GetSmartTracklistDocument,
       variables,
     );
@@ -537,7 +582,7 @@ export const getSmartTracklist = async (
 
 export const getTrack = async (variables: GetTrackQueryVariables) => {
   try {
-    const { track } = await client.request(GetTrackDocument, variables);
+    const { track } = await request(GetTrackDocument, variables);
     return track;
   } catch (error) {
     throw new DeezerError("Error obteniendo la canción");
@@ -546,7 +591,7 @@ export const getTrack = async (variables: GetTrackQueryVariables) => {
 
 export const getTrackMix = async (variables: GetTrackMixQueryVariables) => {
   try {
-    const { trackMix } = await client.request(GetTrackMixDocument, variables);
+    const { trackMix } = await request(GetTrackMixDocument, variables);
     return trackMix;
   } catch (error) {
     throw new DeezerError("Error obteniendo el mix de la canción");
@@ -557,7 +602,7 @@ export const getUserCharts = async (
   variables: GetUserChartsQueryVariables = {},
 ) => {
   try {
-    const { me } = await client.request(GetUserChartsDocument, variables);
+    const { me } = await request(GetUserChartsDocument, variables);
     return me;
   } catch (error) {
     throw new DeezerError("Error obteniendo las listas del usuario");
@@ -568,7 +613,7 @@ export const getUserPlaylists = async (
   variables: GetUserPlaylistsQueryVariables = {},
 ) => {
   try {
-    const { me } = await client.request(GetUserPlaylistsDocument, variables);
+    const { me } = await request(GetUserPlaylistsDocument, variables);
     return me;
   } catch (error) {
     throw new DeezerError("Error obteniendo las playlists del usuario");
@@ -577,10 +622,13 @@ export const getUserPlaylists = async (
 
 export const search = async (variables: SearchQueryVariables) => {
   try {
-    const { search } = await client.request(SearchDocument, variables);
+    const { search } = await request(SearchDocument, variables);
     return search;
   } catch (error) {
-    throw new DeezerError("Error en la búsqueda");
+    throw new DeezerError(
+      "Error en la búsqueda: " +
+        (error instanceof Error ? error.message : String(error)),
+    );
   }
 };
 
@@ -588,7 +636,7 @@ export const searchFlows = async (
   variables: SearchFlowsQueryVariables = {},
 ) => {
   try {
-    const { search } = await client.request(SearchFlowsDocument, variables);
+    const { search } = await request(SearchFlowsDocument, variables);
     return search;
   } catch (error) {
     throw new DeezerError("Error buscando los Flows");
@@ -599,7 +647,7 @@ export const addArtistToFavorite = async (
   variables: AddArtistToFavoriteMutationVariables,
 ) => {
   try {
-    const { addArtistToFavorite } = await client.request(
+    const { addArtistToFavorite } = await request(
       AddArtistToFavoriteDocument,
       variables,
     );
@@ -613,7 +661,7 @@ export const removeArtistFromFavorite = async (
   variables: RemoveArtistFromFavoriteMutationVariables,
 ) => {
   try {
-    const { removeArtistFromFavorite } = await client.request(
+    const { removeArtistFromFavorite } = await request(
       RemoveArtistFromFavoriteDocument,
       variables,
     );
@@ -627,7 +675,7 @@ export const addAlbumToFavorite = async (
   variables: AddAlbumToFavoriteMutationVariables,
 ) => {
   try {
-    const { addAlbumToFavorite } = await client.request(
+    const { addAlbumToFavorite } = await request(
       AddAlbumToFavoriteDocument,
       variables,
     );
@@ -641,7 +689,7 @@ export const removeAlbumFromFavorite = async (
   variables: RemoveAlbumFromFavoriteMutationVariables,
 ) => {
   try {
-    const { removeAlbumFromFavorite } = await client.request(
+    const { removeAlbumFromFavorite } = await request(
       RemoveAlbumFromFavoriteDocument,
       variables,
     );
@@ -655,7 +703,7 @@ export const addTrackToFavorite = async (
   variables: AddTrackToFavoriteMutationVariables,
 ) => {
   try {
-    const { addTrackToFavorite } = await client.request(
+    const { addTrackToFavorite } = await request(
       AddTrackToFavoriteDocument,
       variables,
     );
@@ -669,7 +717,7 @@ export const removeTrackFromFavorite = async (
   variables: RemoveTrackFromFavoriteMutationVariables,
 ) => {
   try {
-    const { removeTrackFromFavorite } = await client.request(
+    const { removeTrackFromFavorite } = await request(
       RemoveTrackFromFavoriteDocument,
       variables,
     );
@@ -683,7 +731,7 @@ export const addPlaylistToFavorite = async (
   variables: AddPlaylistToFavoriteMutationVariables,
 ) => {
   try {
-    const { addPlaylistToFavorite } = await client.request(
+    const { addPlaylistToFavorite } = await request(
       AddPlaylistToFavoriteDocument,
       variables,
     );
@@ -697,7 +745,7 @@ export const removePlaylistFromFavorite = async (
   variables: RemovePlaylistFromFavoriteMutationVariables,
 ) => {
   try {
-    const { removePlaylistFromFavorite } = await client.request(
+    const { removePlaylistFromFavorite } = await request(
       RemovePlaylistFromFavoriteDocument,
       variables,
     );
@@ -711,7 +759,7 @@ export const addPodcastToFavorite = async (
   variables: AddPodcastToFavoriteMutationVariables,
 ) => {
   try {
-    const { addPodcastToFavorite } = await client.request(
+    const { addPodcastToFavorite } = await request(
       AddPodcastToFavoriteDocument,
       variables,
     );
@@ -725,7 +773,7 @@ export const removePodcastFromFavorite = async (
   variables: RemovePodcastFromFavoriteMutationVariables,
 ) => {
   try {
-    const { removePodcastFromFavorite } = await client.request(
+    const { removePodcastFromFavorite } = await request(
       RemovePodcastFromFavoriteDocument,
       variables,
     );
@@ -739,7 +787,7 @@ export const bookmarkPodcastEpisode = async (
   variables: BookmarkPodcastEpisodeMutationVariables,
 ) => {
   try {
-    const { bookmarkPodcastEpisode } = await client.request(
+    const { bookmarkPodcastEpisode } = await request(
       BookmarkPodcastEpisodeDocument,
       variables,
     );
@@ -753,7 +801,7 @@ export const unbookmarkPodcastEpisode = async (
   variables: UnbookmarkPodcastEpisodeMutationVariables,
 ) => {
   try {
-    const { unbookmarkPodcastEpisode } = await client.request(
+    const { unbookmarkPodcastEpisode } = await request(
       UnbookmarkPodcastEpisodeDocument,
       variables,
     );
@@ -767,7 +815,7 @@ export const markAsPlayedPodcastEpisode = async (
   variables: MarkAsPlayedPodcastEpisodeMutationVariables,
 ) => {
   try {
-    const { markAsPlayedPodcastEpisode } = await client.request(
+    const { markAsPlayedPodcastEpisode } = await request(
       MarkAsPlayedPodcastEpisodeDocument,
       variables,
     );
@@ -781,7 +829,7 @@ export const markAsNotPlayedPodcastEpisode = async (
   variables: MarkAsNotPlayedPodcastEpisodeMutationVariables,
 ) => {
   try {
-    const { markAsNotPlayedPodcastEpisode } = await client.request(
+    const { markAsNotPlayedPodcastEpisode } = await request(
       MarkAsNotPlayedPodcastEpisodeDocument,
       variables,
     );
@@ -795,7 +843,7 @@ export const addAudiobookToFavorite = async (
   variables: AddAudiobookToFavoriteMutationVariables,
 ) => {
   try {
-    const { addAudiobookToFavorite } = await client.request(
+    const { addAudiobookToFavorite } = await request(
       AddAudiobookToFavoriteDocument,
       variables,
     );
@@ -809,7 +857,7 @@ export const removeAudiobookFromFavorite = async (
   variables: RemoveAudiobookFromFavoriteMutationVariables,
 ) => {
   try {
-    const { removeAudiobookFromFavorite } = await client.request(
+    const { removeAudiobookFromFavorite } = await request(
       RemoveAudiobookFromFavoriteDocument,
       variables,
     );
@@ -823,7 +871,7 @@ export const musicTogetherCreateGroup = async (
   variables: MusicTogetherCreateGroupMutationVariables,
 ) => {
   try {
-    const { musicTogetherCreateGroup } = await client.request(
+    const { musicTogetherCreateGroup } = await request(
       MusicTogetherCreateGroupDocument,
       variables,
     );
@@ -837,7 +885,7 @@ export const musicTogetherJoinGroup = async (
   variables: MusicTogetherJoinGroupMutationVariables,
 ) => {
   try {
-    const { musicTogetherJoinGroup } = await client.request(
+    const { musicTogetherJoinGroup } = await request(
       MusicTogetherJoinGroupDocument,
       variables,
     );
@@ -851,7 +899,7 @@ export const musicTogetherLeaveGroup = async (
   variables: MusicTogetherLeaveGroupMutationVariables,
 ) => {
   try {
-    const { musicTogetherLeaveGroup } = await client.request(
+    const { musicTogetherLeaveGroup } = await request(
       MusicTogetherLeaveGroupDocument,
       variables,
     );
@@ -865,7 +913,7 @@ export const musicTogetherRefreshSuggestedTracklist = async (
   variables: MusicTogetherRefreshSuggestedTracklistMutationVariables,
 ) => {
   try {
-    const { musicTogetherRefreshSuggestedTracklist } = await client.request(
+    const { musicTogetherRefreshSuggestedTracklist } = await request(
       MusicTogetherRefreshSuggestedTracklistDocument,
       variables,
     );
@@ -879,7 +927,7 @@ export const musicTogetherUpdateGroupSettings = async (
   variables: MusicTogetherUpdateGroupSettingsMutationVariables,
 ) => {
   try {
-    const { musicTogetherUpdateGroupSettings } = await client.request(
+    const { musicTogetherUpdateGroupSettings } = await request(
       MusicTogetherUpdateGroupSettingsDocument,
       variables,
     );
@@ -893,7 +941,7 @@ export const musicTogetherGenerateGroupName = async (
   variables: MusicTogetherGenerateGroupNameMutationVariables = {},
 ) => {
   try {
-    const { musicTogetherGenerateGroupName } = await client.request(
+    const { musicTogetherGenerateGroupName } = await request(
       MusicTogetherGenerateGroupNameDocument,
       variables,
     );
@@ -907,7 +955,7 @@ export const createPlaylist = async (
   variables: CreatePlaylistMutationVariables,
 ) => {
   try {
-    const { createPlaylist } = await client.request(
+    const { createPlaylist } = await request(
       CreatePlaylistDocument,
       variables,
     );
@@ -921,7 +969,7 @@ export const updatePlaylist = async (
   variables: UpdatePlaylistMutationVariables,
 ) => {
   try {
-    const { updatePlaylist } = await client.request(
+    const { updatePlaylist } = await request(
       UpdatePlaylistDocument,
       variables,
     );
@@ -935,7 +983,7 @@ export const deletePlaylist = async (
   variables: DeletePlaylistMutationVariables,
 ) => {
   try {
-    const { deletePlaylist } = await client.request(
+    const { deletePlaylist } = await request(
       DeletePlaylistDocument,
       variables,
     );
@@ -949,7 +997,7 @@ export const addTracksToPlaylist = async (
   variables: AddTracksToPlaylistMutationVariables,
 ) => {
   try {
-    const { addTracksToPlaylist } = await client.request(
+    const { addTracksToPlaylist } = await request(
       AddTracksToPlaylistDocument,
       variables,
     );
@@ -963,7 +1011,7 @@ export const removeTracksFromPlaylist = async (
   variables: RemoveTracksFromPlaylistMutationVariables,
 ) => {
   try {
-    const { removeTracksFromPlaylist } = await client.request(
+    const { removeTracksFromPlaylist } = await request(
       RemoveTracksFromPlaylistDocument,
       variables,
     );
@@ -972,4 +1020,3 @@ export const removeTracksFromPlaylist = async (
     throw new DeezerError("Error eliminando canciones de la playlist");
   }
 };
-

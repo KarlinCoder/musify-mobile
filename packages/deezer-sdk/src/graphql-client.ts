@@ -1,8 +1,33 @@
-import { Buffer } from "buffer";
 import axios, { type AxiosInstance } from "axios";
 
+const PROXY_URL = "https://musify-proxy.api.karlincoder.com";
 const AUTH_URL = "https://auth.deezer.com/login/arl?jo=p&rto=c&i=c";
 const API_URL = "https://pipe.deezer.com/api";
+
+function decodeBase64Url(input: string): string {
+  const alphabet =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+  let buffer = 0;
+  let bits = 0;
+  let output = "";
+
+  for (const char of input.replace(/=+$/, "")) {
+    const value = alphabet.indexOf(char);
+
+    if (value === -1) continue;
+
+    buffer = (buffer << 6) | value;
+    bits += 6;
+
+    if (bits >= 8) {
+      bits -= 8;
+      output += String.fromCharCode((buffer >> bits) & 0xff);
+    }
+  }
+
+  return output;
+}
 
 function decodeExp(jwt: string): number | null {
   try {
@@ -14,7 +39,7 @@ function decodeExp(jwt: string): number | null {
       scopes: string[];
       exp: number;
       iat: number;
-    } = JSON.parse(Buffer.from(payload, "base64url").toString("utf8"));
+    } = JSON.parse(decodeBase64Url(payload));
 
     return claims?.exp ?? null;
   } catch {
@@ -57,6 +82,13 @@ export class DeezerClient {
     this.logPayloads = options.showLogs ?? false;
     this.http = axios.create({
       validateStatus: () => true,
+    });
+
+    this.http.interceptors.request.use((config) => {
+      if (config.url && /^https?:\/\//.test(config.url)) {
+        config.url = `${PROXY_URL}/?url=${encodeURIComponent(config.url)}`;
+      }
+      return config;
     });
 
     this.fetch = async (input, init) => {

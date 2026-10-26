@@ -1,7 +1,0 @@
-#import "./fragments.graphql"
-
-query GetLivestream($livestreamId: String!) {
-  livestream(livestreamId: $livestreamId) {
-    ...LivestreamFields
-  }
-}

@@ -1,12 +1,12 @@
 interface MFTrack {
   id: string;
   title: string;
+  albumId: string;
   artists: {
     id: string;
     name: string;
   }[];
-  image_url: string;
-  /** Duración de la pista en segundos */
+  image_url: string | null;
   duration: number;
   explicit_lyrics: boolean;
 }
@@ -21,14 +21,17 @@ interface MFLyricLine {
 interface MFArtist {
   id: string;
   name: string;
-  image_url: string;
+  image_url: string | null;
 }
 
 interface MFAlbum {
   id: string;
   title: string;
-  image_url: string;
-  artist: MFArtist;
+  image_url: string | null;
+  artist: {
+    id: string;
+    name: string;
+  };
   explicit_lyrics: boolean;
   record_type: string;
 }
@@ -36,7 +39,7 @@ interface MFAlbum {
 interface MFPlaylist {
   id: string;
   title: string;
-  image_url: string;
+  image_url: string | null;
   nb_tracks: number;
   is_official: boolean;
 }
