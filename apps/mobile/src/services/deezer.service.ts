@@ -35,7 +35,7 @@ import { isOfficialDeezerAuthor } from "@/utils/is-official-plyalist";
 //         id: artist.node.id,
 //         name: artist.node.name,
 //       })),
-//       avg_color
+//       avg_colo: "",
 //     };
 //   } catch (error) {
 //     if (error instanceof Error)
@@ -77,71 +77,71 @@ import { isOfficialDeezerAuthor } from "@/utils/is-official-plyalist";
 //   }
 // };
 
-// export const getCharts = async (): Promise<MFPopular> => {
-//   try {
-//     // console.log(deezer.)
-//     const graphqlCharts = await deezer.getCharts({
-//       albumsFirst: 10,
-//       artistsFirst: 10,
-//       playlistsFirst: 10,
-//       tracksFirst: 10,
-//       countryCode: "es",
-//     });
+export const getCharts = async (): Promise<MFPopular> => {
+  try {
+    // console.log(deezer.)
+    const graphqlCharts = await deezer.getCharts({
+      albumsFirst: 10,
+      artistsFirst: 10,
+      playlistsFirst: 10,
+      tracksFirst: 10,
+      countryCode: "es",
+    });
 
-//     const { data: restCharts } = await axios.get<DeezerChartsResponse>(
-//       `ttps://musify-proxy.api.karlincoder.com/?url=https://api.deezer.com/chart/0`,
-//     );
+    const { data: restCharts } = await axios.get<DeezerChartsResponse>(
+      `ttps://musify-proxy.api.karlincoder.com/?url=https://api.deezer.com/chart/0`,
+    );
 
-//     const mappedResponse: MFPopular = {
-//       tracks:
-//         graphqlCharts?.country?.tracks?.edges.map(({ node: track }) => {
-//           const trackObject: MFTrack = {
-//             id: track!.id ?? "[TRACK_ID]",
-//             albumId: track?.album?.id ?? "[ALBUM_ID]",
-//             artists: track?.contributors.edges.map((artist) => ({
-//               id: artist.node.id,
-//               name: artist.node.name,
-//             }))!,
-//             duration: track!.duration,
-//             explicit_lyrics: track?.isExplicit ?? false,
-//             image_url: track?.album?.cover?.urls[0] ?? null,
-//             title: track!.title,
-//           };
+    const mappedResponse: MFPopular = {
+      tracks:
+        graphqlCharts?.country?.tracks?.edges.map(({ node: track }) => {
+          const trackObject: MFTrack = {
+            id: track!.id ?? "[TRACK_ID]",
+            albumId: track?.album?.id ?? "[ALBUM_ID]",
+            artists: track?.contributors.edges.map((artist) => ({
+              id: artist.node.id,
+              name: artist.node.name,
+            }))!,
+            duration: track!.duration,
+            explicit_lyrics: track?.isExplicit ?? false,
+            image_url: track?.album?.cover?.urls[0] ?? null,
+            title: track!.title,
+          };
 
-//           return trackObject;
-//         }) ?? [],
-//       albums: restCharts.albums.data.map((album) => ({
-//         id: album.id.toString(),
-//         artist: {
-//           id: album.artist.id.toString(),
-//           name: album.artist.name,
-//         },
-//         explicit_lyrics: album.explicit_lyrics,
-//         image_url: album.cover_medium,
-//         record_type: album.record_type,
-//         title: album.title,
-//       })),
-//       artists: restCharts.artists.data.map((artist) => ({
-//         id: artist.id.toString(),
-//         image_url: artist.picture_medium,
-//         name: artist.name,
-//       })),
-//       playlists: restCharts.playlists.data.map((playlist) => ({
-//         id: playlist.id.toString(),
-//         image_url: playlist.picture_medium,
-//         is_official: isOfficialDeezerAuthor(playlist.user.name),
-//         nb_tracks: playlist.nb_tracks,
-//         title: playlist.title,
-//       })),
-//     };
+          return trackObject;
+        }) ?? [],
+      albums: restCharts.albums.data.map((album) => ({
+        id: album.id.toString(),
+        artist: {
+          id: album.artist.id.toString(),
+          name: album.artist.name,
+        },
+        explicit_lyrics: album.explicit_lyrics,
+        image_url: album.cover_medium,
+        record_type: album.record_type,
+        title: album.title,
+      })),
+      artists: restCharts.artists.data.map((artist) => ({
+        id: artist.id.toString(),
+        image_url: artist.picture_medium,
+        name: artist.name,
+      })),
+      playlists: restCharts.playlists.data.map((playlist) => ({
+        id: playlist.id.toString(),
+        image_url: playlist.picture_medium,
+        is_official: isOfficialDeezerAuthor(playlist.user.name),
+        nb_tracks: playlist.nb_tracks,
+        title: playlist.title,
+      })),
+    };
 
-//     return mappedResponse;
-//   } catch (error) {
-//     if (error instanceof Error)
-//       throw new Error(`Error obteniendo los Charts: "${error.message}"`);
-//   }
-//   return mockGetPopular;
-// };
+    return mappedResponse;
+  } catch (error) {
+    if (error instanceof Error)
+      throw new Error(`Error obteniendo los Charts: "${error.message}"`);
+  }
+  return mockGetPopular;
+};
 
 // export const getTrackMix = async (
 //   trackIds: string[],
@@ -186,3 +186,5 @@ import { isOfficialDeezerAuthor } from "@/utils/is-official-plyalist";
 //       throw new Error(`Error en : "${error.message}"`);
 //   }
 // };
+
+// xd
