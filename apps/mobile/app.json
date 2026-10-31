@@ -45,7 +45,9 @@
         "expo-build-properties",
         {
           "android": {
-            "abiFilters": ["arm64-v8a"]
+            "abiFilters": [
+              "arm64-v8a"
+            ]
           }
         }
       ],
@@ -68,7 +70,8 @@
       "expo-font",
       "expo-image",
       "expo-web-browser",
-      "expo-audio"
+      "expo-audio",
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true,

@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "pnpm --dir apps/mobile start",
+    "codegen:deezer-sdk": "pnpm --dir packages/deezer-sdk codegen",
     "android": "pnpm --dir apps/mobile android",
     "ios": "pnpm --dir apps/mobile ios",
     "web": "pnpm --dir apps/mobile web",

@@ -1,12 +1,16 @@
-interface MFTrack {
+interface Track {
   id: string;
   title: string;
-  albumId: string;
+  album: {
+    id: string;
+    name: strng;
+    cover: string;
+  };
   artists: {
     id: string;
     name: string;
+    picture: string;
   }[];
-  image_url: string | null;
   duration: number;
   explicit_lyrics: boolean;
 }
@@ -46,7 +50,6 @@ interface MFPlaylist {
 
 interface MFTrackPage extends MFTrack {
   lyrics: MFLyricLine[];
-  avg_color: string;
   sizes: {
     MP3_128: number;
     MP3_320: number;

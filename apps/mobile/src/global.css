@@ -3,17 +3,19 @@
 
 @theme {
   --color-primary: #1d9bf0;
-  --color-bg: #121212;
-  --color-surface: #1f1f1f;
-  --color-text: #ffffff;
-  --color-muted: #b3b3b3;
+  --color-text: #f4f4f4;
+  --color-text-muted: #b2b2b2;
 
-  --font-spotify-bold: "Spotify Bold";
-  --font-spotify-medium: "Spotify Medium";
-  --font-spotify-regular: "Spotify Regular";
-  --font-spotify-mono: "Spotify Mono";
+  --color-background-dark: #121212;
+  /* --color-background: #333333;
+  --color-background-light: #; */
+
+  --font-spotify-bold: "Spotify-Bold";
+  --font-spotify-medium: "Spotify-Medium";
+  --font-spotify-regular: "Spotify-Regular";
+  --font-spotify-mono: "Spotify-Mono";
 }
 
-* {
-  @apply font-spotify-regular;
+.section-title {
+  @apply font-spotify-medium;
 }

@@ -23,59 +23,58 @@ import { isOfficialDeezerAuthor } from "@/utils/is-official-plyalist";
 //   return [];
 // };
 
-// export const getTrack = async (trackId: string): Promise<MFTrackPage> => {
-//   try {
-//     const track = await deezer.getTrack({
-//       trackId,
-//     });
+export const getTrack = async (trackId: string): Promise<MFTrackPage> => {
+  try {
+    const track = await deezer.getTrack({
+      trackId,
+    });
 
-//     return {
-//       albumId: track!.album!.id,
-//       artists: track!.contributors.edges.map((artist) => ({
-//         id: artist.node.id,
-//         name: artist.node.name,
-//       })),
-//       avg_colo: "",
-//     };
-//   } catch (error) {
-//     if (error instanceof Error)
-//       throw new Error(`Error en getTrack: "${error.message}"`);
-//   }
-// };
+    return {
+      albumId: track!.album!.id,
+      artists: track!.contributors.edges.map((artist) => ({
+        id: artist.node.id,
+        name: artist.node.name,
+      })),
+    };
+  } catch (error) {
+    if (error instanceof Error)
+      throw new Error(`Error en getTrack: "${error.message}"`);
+  }
+};
 
-// export const getTrackPreview = async (trackId: string): Promise<string> => {
-//   try {
-//   } catch (error) {
-//     if (error instanceof Error)
-//       throw new Error(`Error en : "${error.message}"`);
-//   }
-// };
+export const getTrackPreview = async (trackId: string): Promise<string> => {
+  try {
+  } catch (error) {
+    if (error instanceof Error)
+      throw new Error(`Error en : "${error.message}"`);
+  }
+};
 
-// export const getAlbum = async (albumId: string): Promise<MFAlbumPage> => {
-//   try {
-//   } catch (error) {
-//     if (error instanceof Error)
-//       throw new Error(`Error en : "${error.message}"`);
-//   }
-// };
+export const getAlbum = async (albumId: string): Promise<MFAlbumPage> => {
+  try {
+  } catch (error) {
+    if (error instanceof Error)
+      throw new Error(`Error en : "${error.message}"`);
+  }
+};
 
-// export const getArtist = async (artistId: string): Promise<MFArtistPage> => {
-//   try {
-//   } catch (error) {
-//     if (error instanceof Error)
-//       throw new Error(`Error en : "${error.message}"`);
-//   }
-// };
+export const getArtist = async (artistId: string): Promise<MFArtistPage> => {
+  try {
+  } catch (error) {
+    if (error instanceof Error)
+      throw new Error(`Error en : "${error.message}"`);
+  }
+};
 
-// export const getPlaylist = async (
-//   playlistId: string,
-// ): Promise<MFPlaylistPage> => {
-//   try {
-//   } catch (error) {
-//     if (error instanceof Error)
-//       throw new Error(`Error en : "${error.message}"`);
-//   }
-// };
+export const getPlaylist = async (
+  playlistId: string,
+): Promise<MFPlaylistPage> => {
+  try {
+  } catch (error) {
+    if (error instanceof Error)
+      throw new Error(`Error en : "${error.message}"`);
+  }
+};
 
 export const getCharts = async (): Promise<MFPopular> => {
   try {
@@ -89,22 +88,26 @@ export const getCharts = async (): Promise<MFPopular> => {
     });
 
     const { data: restCharts } = await axios.get<DeezerChartsResponse>(
-      `ttps://musify-proxy.api.karlincoder.com/?url=https://api.deezer.com/chart/0`,
+      `https://musify-proxy.api.karlincoder.com/?url=https://api.deezer.com/chart/0`,
     );
 
     const mappedResponse: MFPopular = {
       tracks:
         graphqlCharts?.country?.tracks?.edges.map(({ node: track }) => {
-          const trackObject: MFTrack = {
-            id: track!.id ?? "[TRACK_ID]",
-            albumId: track?.album?.id ?? "[ALBUM_ID]",
+          const trackObject: Track = {
+            id: track!.id,
+            album: {
+              id: track!.album!.id,
+              name: track!.album!.displayTitle,
+              cover: track!.album!.cover!.urls[0],
+            },
             artists: track?.contributors.edges.map((artist) => ({
               id: artist.node.id,
               name: artist.node.name,
+              picture: artist.node.picture!.urls[0],
             }))!,
             duration: track!.duration,
             explicit_lyrics: track?.isExplicit ?? false,
-            image_url: track?.album?.cover?.urls[0] ?? null,
             title: track!.title,
           };
 
@@ -137,54 +140,51 @@ export const getCharts = async (): Promise<MFPopular> => {
 
     return mappedResponse;
   } catch (error) {
-    if (error instanceof Error)
-      throw new Error(`Error obteniendo los Charts: "${error.message}"`);
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Error obteniendo los Charts: "${message}"`);
   }
-  return mockGetPopular;
 };
 
-// export const getTrackMix = async (
-//   trackIds: string[],
-//   limit?: number,
-// ): Promise<MFTrack[]> => {
-//   try {
-//   } catch (error) {
-//     if (error instanceof Error)
-//       throw new Error(`Error en : "${error.message}"`);
-//   }
-// };
+export const getTrackMix = async (
+  trackIds: string[],
+  limit?: number,
+): Promise<MFTrack[]> => {
+  try {
+  } catch (error) {
+    if (error instanceof Error)
+      throw new Error(`Error en : "${error.message}"`);
+  }
+};
 
-// export const getArtistMix = async (
-//   artistIds: string[],
-//   limit?: number,
-// ): Promise<MFTrack[]> => {
-//   try {
-//   } catch (error) {
-//     if (error instanceof Error)
-//       throw new Error(`Error en : "${error.message}"`);
-//   }
-// };
+export const getArtistMix = async (
+  artistIds: string[],
+  limit?: number,
+): Promise<MFTrack[]> => {
+  try {
+  } catch (error) {
+    if (error instanceof Error)
+      throw new Error(`Error en : "${error.message}"`);
+  }
+};
 
-// export const getSimilarTracks = async (
-//   trackId: string,
-//   nb?: number,
-// ): Promise<MFTrack[]> => {
-//   try {
-//   } catch (error) {
-//     if (error instanceof Error)
-//       throw new Error(`Error en : "${error.message}"`);
-//   }
-// };
+export const getSimilarTracks = async (
+  trackId: string,
+  nb?: number,
+): Promise<MFTrack[]> => {
+  try {
+  } catch (error) {
+    if (error instanceof Error)
+      throw new Error(`Error en : "${error.message}"`);
+  }
+};
 
-// export const getSimilarArtists = async (
-//   artistId: string,
-//   first?: number,
-// ): Promise<MFArtist[]> => {
-//   try {
-//   } catch (error) {
-//     if (error instanceof Error)
-//       throw new Error(`Error en : "${error.message}"`);
-//   }
-// };
-
-// xd
+export const getSimilarArtists = async (
+  artistId: string,
+  first?: number,
+): Promise<MFArtist[]> => {
+  try {
+  } catch (error) {
+    if (error instanceof Error)
+      throw new Error(`Error en : "${error.message}"`);
+  }
+};
