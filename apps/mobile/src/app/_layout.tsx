@@ -5,7 +5,7 @@ import { QueryClient } from "@tanstack/react-query";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+//
 import { SplashScreen, Stack } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar, View } from "react-native";
