@@ -1,11 +1,8 @@
 import "../global.css";
 import "react-native-reanimated";
 
-import { QueryClient } from "@tanstack/react-query";
-import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
-import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-//
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 import { SplashScreen, Stack } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar, View } from "react-native";
@@ -13,6 +10,7 @@ import { NavigationBar } from "expo-navigation-bar";
 import { ThemeProvider, DefaultTheme } from "expo-router/react-navigation";
 import { useEffect } from "react";
 import { useLoadAppFonts } from "@/hooks/useLoadAppFonts";
+import AppNavbar from "@/components/AppNavbar";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -27,13 +25,9 @@ const transparentTheme: ReactNavigation.Theme = {
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      gcTime: 1000 * 60 * 60 * 3, // Mantener la caché durante 24 horas
+      gcTime: 1000 * 60 * 60 * 24, // Mantener la caché durante 24 horas
     },
   },
-});
-
-const asyncStoragePersister = createAsyncStoragePersister({
-  storage: AsyncStorage,
 });
 
 export default function RootLayout() {
@@ -50,23 +44,19 @@ export default function RootLayout() {
   }
 
   return (
-    <PersistQueryClientProvider
-      client={queryClient}
-      persistOptions={{
-        persister: asyncStoragePersister,
-        maxAge: 1000 * 60 * 60 * 3, // Establecer el tiempo de validez máximo de la caché en 24 horas
-      }}
-    >
+    <QueryClientProvider client={queryClient}>
       <SafeAreaView className="relative size-full">
         <View className="size-full bg-background-dark">
           <ThemeProvider value={transparentTheme}>
             <Stack />
           </ThemeProvider>
+
+          <AppNavbar />
         </View>
 
         <StatusBar barStyle={"light-content"} />
         <NavigationBar style="dark" />
       </SafeAreaView>
-    </PersistQueryClientProvider>
+    </QueryClientProvider>
   );
 }

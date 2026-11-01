@@ -80,11 +80,11 @@ export const getCharts = async (): Promise<MFPopular> => {
   try {
     // console.log(deezer.)
     const graphqlCharts = await deezer.getCharts({
-      albumsFirst: 10,
-      artistsFirst: 10,
-      playlistsFirst: 10,
+      albumsFirst: 0,
+      artistsFirst: 0,
+      playlistsFirst: 0,
       tracksFirst: 10,
-      countryCode: "es",
+      countryCode: "US",
     });
 
     const { data: restCharts } = await axios.get<DeezerChartsResponse>(
@@ -144,6 +144,8 @@ export const getCharts = async (): Promise<MFPopular> => {
     throw new Error(`Error obteniendo los Charts: "${message}"`);
   }
 };
+
+export const getRecomendations = async () => {};
 
 export const getTrackMix = async (
   trackIds: string[],
