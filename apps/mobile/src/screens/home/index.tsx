@@ -1,121 +1,144 @@
-import { Stack } from "expo-router";
-import { useEffect, useState } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
-import { Avatar } from "@kolking/react-native-avatar";
-import { getCharts } from "@/services/deezer.service";
-import { useQuery } from "@tanstack/react-query";
-import { splitArray } from "./utils/split-array";
+import { useState } from "react";
+import { FlatList, Pressable, ScrollView, Text, View } from "react-native";
+import { getCharts, getRecomendations } from "@/services/deezer.service";
+import { useQueries } from "@tanstack/react-query";
+import TracksSection from "./components/TracksSection";
+import RowContainer from "./components/RowContainer";
+import AlbumCard from "@/components/AlbumCard";
+import ArtistCard from "@/components/ArtistCard";
+import PlaylistCard from "@/components/PlaylistCard";
+import AppTopBar from "@/components/AppTopBar";
 import TrackCard from "@/components/TrackCard";
 
 export default function HomeScreen() {
   const groups = ["Canciones", "Albumes", "Artistas", "Playlists"] as const;
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ["charts"],
-    queryFn: getCharts,
-    refetchInterval: 60 * 1000,
-    staleTime: 60 * 1000,
+  const [chartsQuery, recommendationsQuery] = useQueries({
+    queries: [
+      {
+        queryKey: ["charts"],
+        queryFn: getCharts,
+        refetchInterval: 60 * 1000,
+        staleTime: 60 * 1000,
+      },
+      {
+        queryKey: ["recomendations"],
+        queryFn: getRecomendations,
+        refetchInterval: 60 * 1000,
+        staleTime: 60 * 1000,
+      },
+    ],
   });
 
-  const tracks = data?.tracks.slice(0, 9) ?? [];
-  const groupedTracks = splitArray(tracks, 3);
+  const dataCharts = chartsQuery.data;
+  const isLoadingCharts = chartsQuery.isLoading;
+  const errorCharts = chartsQuery.error;
+
+  const dataRecommendations = recommendationsQuery.data;
+  const isLoadingRecommendations = recommendationsQuery.isLoading;
+  const errorRecommendations = recommendationsQuery.error;
 
   const [selectedGroup, setSelectedGroup] = useState<(typeof groups)[number]>();
 
-  const [containerWidth, setContainerWidth] = useState(0);
-  const [carouselWidth, setCarouselWidth] = useState(0);
-
-  const PAGE_WIDTH = containerWidth * 0.97;
-  const GAP = 12;
-
   return (
-    <>
-      <Stack.Header hidden />
+    <View className="flex-1 gap-3 items-start justify-start">
+      <AppTopBar scroll>
+        {groups.map((group) => {
+          const backgroundClass =
+            selectedGroup === group ? "bg-primary" : "bg-[#333333]";
+          const textClass =
+            selectedGroup === group ? "text-black" : "text-white";
 
-      <View className="flex-1 gap-3 items-start justify-start p-4">
-        <View className="flex-row items-center gap-2 -mr-4 relative">
-          <Avatar name="Giancarlo Dennis" size={38} />
-
-          <ScrollView
-            horizontal
-            overScrollMode="never"
-            showsHorizontalScrollIndicator={false}
-            contentContainerClassName="gap-2 pl-2"
-          >
-            {groups.map((group) => {
-              const backgroundClass =
-                selectedGroup === group ? "bg-primary" : "bg-[#333333]";
-              const textClass =
-                selectedGroup === group ? "text-black" : "text-white";
-
-              return (
-                <Pressable
-                  key={group}
-                  onPress={() => setSelectedGroup(group)}
-                  className={`rounded-full px-4 py-2 ${backgroundClass}`}
-                >
-                  <Text
-                    className={`text-[13px] ${textClass} font-spotify-medium`}
-                  >
-                    {group}
-                  </Text>
-                </Pressable>
-              );
-            })}
-          </ScrollView>
-        </View>
-
-        <View
-          className="w-full"
-          onLayout={(e) => setContainerWidth(e.nativeEvent.layout.width)}
-        >
-          <Text className="text-text-muted text-[13px] font-spotify-regular">
-            Explora la musica que la gente ama actualmente
-          </Text>
-          <Text className="text-text text-[21px] font-spotify-bold">
-            Escuchar ahora
-          </Text>
-
-          {isLoading && <Text className="text-white">Cargando datos</Text>}
-
-          {error && (
-            <Text className="text-red-400">Error al cargar las canciones</Text>
-          )}
-
-          {!isLoading && !error && containerWidth > 0 && (
-            <ScrollView
-              horizontal
-              onLayout={(e) => setCarouselWidth(e.nativeEvent.layout.width)}
-              showsHorizontalScrollIndicator={false}
-              snapToInterval={PAGE_WIDTH + GAP}
-              snapToAlignment="start"
-              decelerationRate="fast"
-              className="-mx-4"
-              overScrollMode="never"
-              alwaysBounceHorizontal
-              bounces={false}
-              contentContainerClassName="mt-2 px-1.5"
-              contentContainerStyle={{
-                gap: GAP,
-                paddingRight: Math.max(0, carouselWidth - PAGE_WIDTH),
-              }}
+          return (
+            <Pressable
+              key={group}
+              onPress={() => setSelectedGroup(group)}
+              className={`rounded-full px-4 py-2 ${backgroundClass}`}
             >
-              {groupedTracks.map((tracksInGroup, index) => (
-                <View
-                  key={index}
-                  style={{
-                    width: PAGE_WIDTH,
-                  }}
-                >
-                  {tracksInGroup.map((track) => (
-                    <TrackCard key={track.id} track={track} />
-                  ))}
-                </View>
+              <Text className={`text-[13px] ${textClass} font-spotify-medium`}>
+                {group}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </AppTopBar>
+
+      {/* Home sections */}
+      <ScrollView className="px-4">
+        <Text className="text-text-muted text-[13px] font-spotify-regular">
+          Explora la musica que la gente ama actualmente
+        </Text>
+
+        {isLoadingCharts && <Text className="text-white">Cargando charts</Text>}
+
+        {isLoadingRecommendations && (
+          <Text className="text-white">Cargando recomendations</Text>
+        )}
+
+        {errorCharts && (
+          <Text className="text-red-400">
+            Error al cargar los charts: {errorCharts.message}
+          </Text>
+        )}
+
+        {errorRecommendations && (
+          <Text className="text-red-400">
+            Error al cargar las recomendaciones: {errorRecommendations.message}
+          </Text>
+        )}
+
+        {dataCharts && dataRecommendations && (
+          <View className="gap-3 pb-30">
+            <TracksSection title="Escuchar ahora" tracks={dataCharts.tracks} />
+
+            <RowContainer title="Lanzamientos recientes">
+              {dataRecommendations.newReleases.map((release) => (
+                <AlbumCard key={release.id} album={release} />
               ))}
-            </ScrollView>
-          )}
-        </View>
-      </View>
-    </>
+            </RowContainer>
+
+            <TracksSection
+              title="Te puede gustar"
+              tracks={dataRecommendations.tracks}
+            />
+
+            <RowContainer title="Albumes del momento">
+              {dataCharts.albums.map((album) => (
+                <AlbumCard key={album.id} album={album} />
+              ))}
+            </RowContainer>
+
+            <RowContainer title="Listas mas gustadas">
+              {dataCharts.playlists.map((playlist) => (
+                <PlaylistCard key={playlist.id} playlist={playlist} />
+              ))}
+            </RowContainer>
+            <RowContainer title="Artistas mas sonados">
+              {dataCharts.artists.map((artist) => (
+                <ArtistCard key={artist.id} artist={artist} />
+              ))}
+            </RowContainer>
+
+            <RowContainer title="Lo mejor de los artistas">
+              {dataRecommendations.artistsPlaylists.map((playlist) => (
+                <PlaylistCard key={playlist.id} playlist={playlist} />
+              ))}
+            </RowContainer>
+
+            <RowContainer title="Tambien te sugerimos">
+              {dataRecommendations.artists.map((artist) => (
+                <ArtistCard key={artist.id} artist={artist} />
+              ))}
+            </RowContainer>
+
+            <RowContainer title="Listas que te pueden gustar">
+              {dataRecommendations.playlists.map((playlist) => (
+                <PlaylistCard key={playlist.id} playlist={playlist} />
+              ))}
+            </RowContainer>
+          </View>
+        )}
+      </ScrollView>
+    </View>
   );
 }

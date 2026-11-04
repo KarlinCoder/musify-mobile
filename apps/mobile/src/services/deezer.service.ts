@@ -1,82 +1,56 @@
-import {
-  mockGetTrack,
-  mockGetTrackPreview,
-  mockGetAlbum,
-  mockGetArtist,
-  mockGetPlaylist,
-  mockGetPopular,
-  mockGetTrackMix,
-  mockGetArtistMix,
-  mockGetSimilarTracks,
-  mockGetSimilarArtists,
-} from "../../mock-data";
-
 import deezer from "deezer-sdk";
 import axios from "axios";
-import { DeezerChartsResponse } from "@/types/deezer-aux";
+import type { DeezerChartsResponse } from "@/types/deezer-aux";
 import { isOfficialDeezerAuthor } from "@/utils/is-official-plyalist";
+import { DeezerGenre } from "@/types/deezer-public.typs";
 
-// export const search = async (
-//   query: string,
-// ): Promise<> => {
-//   await delay(MOCK_DELAY_MS);
-//   return [];
-// };
-
-export const getTrack = async (trackId: string): Promise<MFTrackPage> => {
+export const getTrack = async (trackId: string): Promise<Track> => {
   try {
     const track = await deezer.getTrack({
       trackId,
     });
 
     return {
-      albumId: track!.album!.id,
-      artists: track!.contributors.edges.map((artist) => ({
-        id: artist.node.id,
-        name: artist.node.name,
+      id: track!.id,
+      title: track!.title,
+      album: {
+        id: track!.album?.id ?? "",
+        name: track!.album?.displayTitle ?? "",
+        cover: track!.album?.cover?.urls[0] ?? "",
+      },
+      artists: track!.contributors.edges.map(({ node }) => ({
+        id: node.id,
+        name: node.name,
+        picture: node.picture?.urls[0] ?? null,
       })),
+      duration: track!.duration,
+      explicit_lyrics: track!.isExplicit ?? false,
     };
   } catch (error) {
-    if (error instanceof Error)
-      throw new Error(`Error en getTrack: "${error.message}"`);
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Error en getTrack: "${message}"`);
   }
 };
 
-export const getTrackPreview = async (trackId: string): Promise<string> => {
-  try {
-  } catch (error) {
-    if (error instanceof Error)
-      throw new Error(`Error en : "${error.message}"`);
-  }
+export const getTrackPreview = async (_trackId: string): Promise<string> => {
+  throw new Error("getTrackPreview no implementado");
 };
 
-export const getAlbum = async (albumId: string): Promise<MFAlbumPage> => {
-  try {
-  } catch (error) {
-    if (error instanceof Error)
-      throw new Error(`Error en : "${error.message}"`);
-  }
+export const getAlbum = async (_albumId: string): Promise<MFAlbumPage> => {
+  throw new Error("getAlbum no implementado");
 };
 
-export const getArtist = async (artistId: string): Promise<MFArtistPage> => {
-  try {
-  } catch (error) {
-    if (error instanceof Error)
-      throw new Error(`Error en : "${error.message}"`);
-  }
+export const getArtist = async (_artistId: string): Promise<MFArtistPage> => {
+  throw new Error("getArtist no implementado");
 };
 
 export const getPlaylist = async (
-  playlistId: string,
+  _playlistId: string,
 ): Promise<MFPlaylistPage> => {
-  try {
-  } catch (error) {
-    if (error instanceof Error)
-      throw new Error(`Error en : "${error.message}"`);
-  }
+  throw new Error("getPlaylist no implementado");
 };
 
-export const getCharts = async (): Promise<MFPopular> => {
+export const getCharts = async (): Promise<Popular> => {
   try {
     // console.log(deezer.)
     const graphqlCharts = await deezer.getCharts({
@@ -88,24 +62,25 @@ export const getCharts = async (): Promise<MFPopular> => {
     });
 
     const { data: restCharts } = await axios.get<DeezerChartsResponse>(
-      `https://musify-proxy.api.karlincoder.com/?url=https://api.deezer.com/chart/0`,
+      `https://musify-proxy.api.karlincoder.com/?url=https://api.deezer.com/chart/united-states`,
     );
 
-    const mappedResponse: MFPopular = {
+    const mappedResponse: Popular = {
       tracks:
-        graphqlCharts?.country?.tracks?.edges.map(({ node: track }) => {
+        graphqlCharts?.country?.tracks?.edges?.map(({ node: track }) => {
           const trackObject: Track = {
             id: track!.id,
             album: {
-              id: track!.album!.id,
-              name: track!.album!.displayTitle,
-              cover: track!.album!.cover!.urls[0],
+              id: track!.album?.id ?? "",
+              name: track!.album?.displayTitle ?? "",
+              cover: track!.album?.cover?.urls[0] ?? "",
             },
-            artists: track?.contributors.edges.map((artist) => ({
-              id: artist.node.id,
-              name: artist.node.name,
-              picture: artist.node.picture!.urls[0],
-            }))!,
+            artists:
+              track?.contributors.edges.map((artist) => ({
+                id: artist.node.id,
+                name: artist.node.name,
+                picture: artist.node.picture?.urls[0] ?? null,
+              })) ?? [],
             duration: track!.duration,
             explicit_lyrics: track?.isExplicit ?? false,
             title: track!.title,
@@ -113,28 +88,37 @@ export const getCharts = async (): Promise<MFPopular> => {
 
           return trackObject;
         }) ?? [],
-      albums: restCharts.albums.data.map((album) => ({
+      albums: (restCharts?.albums?.data ?? []).map((album) => ({
         id: album.id.toString(),
-        artist: {
-          id: album.artist.id.toString(),
-          name: album.artist.name,
-        },
-        explicit_lyrics: album.explicit_lyrics,
-        image_url: album.cover_medium,
-        record_type: album.record_type,
         title: album.title,
+        cover: album.cover_medium,
+        artists: [
+          {
+            id: album.artist.id.toString(),
+            name: album.artist.name,
+            picture: null,
+          },
+        ],
+        explicit_lyrics: album.explicit_lyrics,
+        type:
+          (album.record_type as string) === "ep"
+            ? "EP"
+            : (album.record_type as string) === "single"
+              ? "SINGLE"
+              : "ALBUM",
       })),
-      artists: restCharts.artists.data.map((artist) => ({
+      artists: (restCharts?.artists?.data ?? []).map((artist) => ({
         id: artist.id.toString(),
-        image_url: artist.picture_medium,
         name: artist.name,
+        picture: artist.picture_medium,
       })),
-      playlists: restCharts.playlists.data.map((playlist) => ({
+      playlists: (restCharts?.playlists?.data ?? []).map((playlist) => ({
         id: playlist.id.toString(),
-        image_url: playlist.picture_medium,
-        is_official: isOfficialDeezerAuthor(playlist.user.name),
-        nb_tracks: playlist.nb_tracks,
         title: playlist.title,
+        picture: playlist.picture_medium,
+        is_official: isOfficialDeezerAuthor(playlist.user?.name ?? ""),
+        nb_tracks: playlist.nb_tracks,
+        description: null,
       })),
     };
 
@@ -145,48 +129,136 @@ export const getCharts = async (): Promise<MFPopular> => {
   }
 };
 
-export const getRecomendations = async () => {};
+export const getGenres = async (): Promise<Genre[]> => {
+  const { data } = await axios.get<{ data: DeezerGenre[] }>(
+    `https://musify-proxy.api.karlincoder.com/?url=${encodeURIComponent("https://api.deezer.com/genre")}`,
+  );
+
+  const mappedGenres: Genre[] = data.data.map((genre) => {
+    const mappedGenre: Genre = {
+      id: genre.id.toString(),
+      name: genre.name,
+      picture: genre.picture,
+    };
+    return mappedGenre;
+  });
+
+  return mappedGenres;
+};
+
+export const getRecomendations = async (): Promise<Recomendations> => {
+  const recomendations = await deezer.getRecommendations({
+    artistPlaylistsFirst: 10,
+    artistsFirst: 10,
+    hotTracksLimit: 10,
+    newReleasesFirst: 20,
+    playlistsFirst: 10,
+  });
+
+  const recommendations = recomendations?.recommendations;
+
+  if (!recommendations) {
+    throw new Error("No se pudieron obtener las recomendaciones");
+  }
+
+  const mappedRecomendations: Recomendations = {
+    artists: (recommendations.artists?.edges ?? []).map(({ node }) => ({
+      id: node!.id,
+      name: node!.name,
+      picture: node!.picture?.urls[0] ?? null,
+    })),
+    artistsPlaylists: (recommendations.artistPlaylists?.edges ?? []).map(
+      ({ node }) => ({
+        id: node!.id,
+        picture: node!.picture?.urls[0] ?? null,
+        is_official: isOfficialDeezerAuthor(node!.owner?.name ?? ""),
+        nb_tracks: node!.estimatedTracksCount,
+        title: node!.title,
+        description: node!.description,
+      }),
+    ),
+    tracks: (recommendations.hotTracks ?? []).map((track) => ({
+      id: track.id,
+      title: track.title,
+      album: {
+        id: track.album?.id ?? "",
+        name: track.album?.displayTitle ?? "",
+        cover: track.album?.cover?.urls[0] ?? "",
+      },
+      artists: track.contributors.edges.map(({ node }) => ({
+        id: node.id,
+        name: node.name,
+        picture: node.picture?.urls[0] ?? null,
+      })),
+      duration: track.duration,
+      explicit_lyrics: track.isExplicit,
+    })),
+    newReleases: (recommendations.newReleases?.edges ?? []).map(({ node }) => {
+      const release = node!;
+
+      return {
+        id: release.id,
+        title: release.displayTitle,
+        cover: release.cover?.urls[0] ?? null,
+        artists: (release.contributors?.edges ?? []).map(
+          ({ node: artist }) => ({
+            id: artist.id,
+            name: artist.name,
+            picture: null,
+          }),
+        ),
+        explicit_lyrics: release.isExplicit ?? false,
+        type:
+          release.type === "EP"
+            ? "EP"
+            : release.type === "SINGLES"
+              ? "SINGLE"
+              : "ALBUM",
+      };
+    }),
+    playlists: recomendations.recommendations.playlists.edges.map(
+      (playlist) => {
+        const node = playlist.node!;
+
+        return {
+          id: node.id,
+          title: node.title,
+          description: node.description ?? null,
+          is_official: isOfficialDeezerAuthor(node.owner!.name),
+          nb_tracks: node.estimatedTracksCount,
+          picture: node.picture!.urls[0] ?? null,
+        };
+      },
+    ),
+  };
+
+  return mappedRecomendations;
+};
 
 export const getTrackMix = async (
-  trackIds: string[],
-  limit?: number,
+  _trackIds: string[],
+  _limit?: number,
 ): Promise<MFTrack[]> => {
-  try {
-  } catch (error) {
-    if (error instanceof Error)
-      throw new Error(`Error en : "${error.message}"`);
-  }
+  throw new Error("getTrackMix no implementado");
 };
 
 export const getArtistMix = async (
-  artistIds: string[],
-  limit?: number,
+  _artistIds: string[],
+  _limit?: number,
 ): Promise<MFTrack[]> => {
-  try {
-  } catch (error) {
-    if (error instanceof Error)
-      throw new Error(`Error en : "${error.message}"`);
-  }
+  throw new Error("getArtistMix no implementado");
 };
 
 export const getSimilarTracks = async (
-  trackId: string,
-  nb?: number,
+  _trackId: string,
+  _nb?: number,
 ): Promise<MFTrack[]> => {
-  try {
-  } catch (error) {
-    if (error instanceof Error)
-      throw new Error(`Error en : "${error.message}"`);
-  }
+  throw new Error("getSimilarTracks no implementado");
 };
 
 export const getSimilarArtists = async (
-  artistId: string,
-  first?: number,
+  _artistId: string,
+  _first?: number,
 ): Promise<MFArtist[]> => {
-  try {
-  } catch (error) {
-    if (error instanceof Error)
-      throw new Error(`Error en : "${error.message}"`);
-  }
+  throw new Error("getSimilarArtists no implementado");
 };

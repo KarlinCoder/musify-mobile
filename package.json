@@ -9,7 +9,8 @@
     "ios": "pnpm --dir apps/mobile ios",
     "web": "pnpm --dir apps/mobile web",
     "lint": "pnpm --dir apps/mobile lint",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "db:generate": "pnpm --dir apps/mobile db:generate"
   },
   "pnpm": {
     "overrides": {

@@ -144,7 +144,7 @@ import { DeezerError } from "./errors";
 
 const arl =
   process.env.DEEZER_ARL ??
-  "2dd9cd96d9272cd665d73dcae22d9da7540bdd1df335926e3110bb75542dafc90fa6c553af53b01085fbcd583a4e5d2e6ee8589b871bd93db1b2f8c2d8167ec99c4a9e80b29bcb34b6985aabbd06966014049ae4ba95f83d8e2a9db8de89650e";
+  "92b32203a2981d9af54757aef60db1e645d8fe353c978b9fbc6ecf3cdeaea87d7349e0c1cf7a570abfe9d605682bb6676174377e7f340ff39c6ec97377565a007a0c9c521cc3c4cc14109321a458e29c7cab81c0c519696f388a7dcac2c11552";
 
 const auth = createDeezerClient(arl, {
   showLogs: false,
@@ -283,10 +283,7 @@ export const getFavoriteAudiobooks = async (
   variables: GetFavoriteAudiobooksQueryVariables = {},
 ) => {
   try {
-    const { me } = await request(
-      GetFavoriteAudiobooksDocument,
-      variables,
-    );
+    const { me } = await request(GetFavoriteAudiobooksDocument, variables);
     return me;
   } catch (error) {
     throw new DeezerError("Error obteniendo los audiolibros favoritos");
@@ -297,10 +294,7 @@ export const getFavoritePlaylists = async (
   variables: GetFavoritePlaylistsQueryVariables = {},
 ) => {
   try {
-    const { me } = await request(
-      GetFavoritePlaylistsDocument,
-      variables,
-    );
+    const { me } = await request(GetFavoritePlaylistsDocument, variables);
     return me;
   } catch (error) {
     throw new DeezerError("Error obteniendo las playlists favoritas");
@@ -376,10 +370,7 @@ export const getFlowConfigs = async (
 
 export const getLivestream = async (variables: GetLivestreamQueryVariables) => {
   try {
-    const { livestream } = await request(
-      GetLivestreamDocument,
-      variables,
-    );
+    const { livestream } = await request(GetLivestreamDocument, variables);
     return livestream;
   } catch (error) {
     throw new DeezerError("Error obteniendo la transmisión en vivo");
@@ -438,10 +429,7 @@ export const getMusicTogetherGroups = async (
   variables: GetMusicTogetherGroupsQueryVariables = {},
 ) => {
   try {
-    const { me } = await request(
-      GetMusicTogetherGroupsDocument,
-      variables,
-    );
+    const { me } = await request(GetMusicTogetherGroupsDocument, variables);
     return me;
   } catch (error) {
     throw new DeezerError("Error obteniendo los grupos de Music Together");
@@ -495,10 +483,7 @@ export const getPodcastEpisodeBookmarks = async (
   variables: GetPodcastEpisodeBookmarksQueryVariables = {},
 ) => {
   try {
-    const { me } = await request(
-      GetPodcastEpisodeBookmarksDocument,
-      variables,
-    );
+    const { me } = await request(GetPodcastEpisodeBookmarksDocument, variables);
     return me;
   } catch (error) {
     throw new DeezerError("Error obteniendo los marcadores de episodios");
@@ -545,10 +530,7 @@ export const getSimilarArtists = async (
   variables: GetSimilarArtistsQueryVariables,
 ) => {
   try {
-    const { artist } = await request(
-      GetSimilarArtistsDocument,
-      variables,
-    );
+    const { artist } = await request(GetSimilarArtistsDocument, variables);
     return artist;
   } catch (error) {
     throw new DeezerError("Error obteniendo los artistas similares");
@@ -955,10 +937,7 @@ export const createPlaylist = async (
   variables: CreatePlaylistMutationVariables,
 ) => {
   try {
-    const { createPlaylist } = await request(
-      CreatePlaylistDocument,
-      variables,
-    );
+    const { createPlaylist } = await request(CreatePlaylistDocument, variables);
     return createPlaylist;
   } catch (error) {
     throw new DeezerError("Error creando la playlist");
@@ -969,10 +948,7 @@ export const updatePlaylist = async (
   variables: UpdatePlaylistMutationVariables,
 ) => {
   try {
-    const { updatePlaylist } = await request(
-      UpdatePlaylistDocument,
-      variables,
-    );
+    const { updatePlaylist } = await request(UpdatePlaylistDocument, variables);
     return updatePlaylist;
   } catch (error) {
     throw new DeezerError("Error actualizando la playlist");
@@ -983,10 +959,7 @@ export const deletePlaylist = async (
   variables: DeletePlaylistMutationVariables,
 ) => {
   try {
-    const { deletePlaylist } = await request(
-      DeletePlaylistDocument,
-      variables,
-    );
+    const { deletePlaylist } = await request(DeletePlaylistDocument, variables);
     return deletePlaylist;
   } catch (error) {
     throw new DeezerError("Error eliminando la playlist");

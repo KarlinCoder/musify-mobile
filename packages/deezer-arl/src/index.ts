@@ -1,5 +1,5 @@
 import axios from "axios";
-import { PROXY_URL, USER_AGENT } from "./constants";
+import { DEEZER_SOCKS_PROXY, PROXY_URL, USER_AGENT } from "./constants";
 import { createDeezerAccount } from "./deezer";
 import { DzArlError } from "./errors";
 
@@ -10,7 +10,11 @@ const http = axios.create({
 
 http.interceptors.request.use((config) => {
   if (config.url && /^https?:\/\//.test(config.url)) {
-    config.url = `${PROXY_URL}/?url=${encodeURIComponent(config.url)}`;
+    const target = encodeURIComponent(config.url);
+    const isDeezer = /^https?:\/\/(?:[^/]+\.)?deezer\.com(?:\/|$)/i.test(config.url);
+    config.url = isDeezer
+      ? `${PROXY_URL}/?url=${target}&proxy=${encodeURIComponent(DEEZER_SOCKS_PROXY)}&insecure=1`
+      : `${PROXY_URL}/?url=${target}`;
   }
   return config;
 });

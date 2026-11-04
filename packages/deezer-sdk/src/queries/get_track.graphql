@@ -26,6 +26,10 @@ query GetTrack($trackId: String!) {
           ... on Artist {
             id
             name
+            picture {
+              id
+              urls(pictureRequest: { width: 264, height: 264 })
+            }
           }
         }
       }
