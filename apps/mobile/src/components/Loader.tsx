@@ -1,11 +1,12 @@
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 
 export default function Loader() {
   return (
-    <ActivityIndicator
-      accessibilityLabel="Cargando"
-      color={"#1d9bf0"}
-      size={"large"}
-    />
+    <View className="flex-1 items-center justify-center">
+      <ActivityIndicator
+        size="large"
+        colorClassName="accent-blue-500 dark:accent-blue-400"
+      />
+    </View>
   );
 }

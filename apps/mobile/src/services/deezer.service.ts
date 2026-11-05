@@ -2,7 +2,7 @@ import deezer from "deezer-sdk";
 import axios from "axios";
 import type { DeezerChartsResponse } from "@/types/deezer-aux";
 import { isOfficialDeezerAuthor } from "@/utils/is-official-plyalist";
-import { DeezerGenre } from "@/types/deezer-public.typs";
+import { DeezerGenre, DeezerTrackFull } from "@/types/deezer-public.typs";
 
 export const getTrack = async (trackId: string): Promise<Track> => {
   try {
@@ -131,7 +131,7 @@ export const getCharts = async (): Promise<Popular> => {
 
 export const getGenres = async (): Promise<Genre[]> => {
   const { data } = await axios.get<{ data: DeezerGenre[] }>(
-    `https://musify-proxy.api.karlincoder.com/?url=${encodeURIComponent("https://api.deezer.com/genre")}`,
+    `https://musify-proxy.api.karlincoder.com/?url=${encodeURIComponent("https://api.deezer.com/genre")}&proxy=socks5://174.77.111.197:4145&insecure=1`,
   );
 
   const mappedGenres: Genre[] = data.data.map((genre) => {
@@ -144,6 +144,101 @@ export const getGenres = async (): Promise<Genre[]> => {
   });
 
   return mappedGenres;
+};
+
+export const getGenre = async (genreId: string): Promise<Genre> => {
+  const { data } = await axios.get<DeezerGenre>(
+    `https://musify-proxy.api.karlincoder.com/?url=${encodeURIComponent(`https://api.deezer.com/genre/${genreId}&proxy=socks5://174.77.111.197:4145&insecure=1`)}`,
+  );
+
+  const genre = data;
+
+  return {
+    id: genre.id.toString(),
+    name: genre.name,
+    picture: genre.picture_big,
+  };
+};
+
+export const getGenreChart = async (
+  genreId: string,
+): Promise<{
+  tracks: Track[];
+  albums: Album[];
+  playlists: Playlist[];
+  artists: Artist[];
+}> => {
+  const { data: restCharts } = await axios.get<DeezerChartsResponse>(
+    `https://musify-proxy.api.karlincoder.com/?url=https://api.deezer.com/chart/${genreId}&proxy=socks5://174.77.111.197:4145&insecure=1`,
+  );
+
+  const mappedResponse: {
+    tracks: Track[];
+    albums: Album[];
+    playlists: Playlist[];
+    artists: Artist[];
+  } = {
+    albums: (restCharts?.albums?.data ?? []).map((album) => ({
+      id: album.id.toString(),
+      title: album.title,
+      cover: album.cover_medium,
+      artists: [
+        {
+          id: album.artist.id.toString(),
+          name: album.artist.name,
+          picture: null,
+        },
+      ],
+      explicit_lyrics: album.explicit_lyrics,
+      type:
+        (album.record_type as string) === "ep"
+          ? "EP"
+          : (album.record_type as string) === "single"
+            ? "SINGLE"
+            : "ALBUM",
+    })),
+    artists: (restCharts?.artists?.data ?? []).map((artist) => ({
+      id: artist.id.toString(),
+      name: artist.name,
+      picture: artist.picture_medium,
+    })),
+    playlists: (restCharts?.playlists?.data ?? []).map((playlist) => ({
+      id: playlist.id.toString(),
+      title: playlist.title,
+      picture: playlist.picture_medium,
+      is_official: isOfficialDeezerAuthor(playlist.user?.name ?? ""),
+      nb_tracks: playlist.nb_tracks,
+      description: null,
+    })),
+    tracks: await Promise.all(
+      restCharts.tracks.data.slice(0, 6).map(async (track) => {
+        const { data } = await axios.get<DeezerTrackFull>(
+          `https://musify-proxy.api.karlincoder.com/?url=https://api.deezer.com/track/${track.id}`,
+        );
+
+        const artists = data.contributors;
+
+        return {
+          id: data.id.toString(),
+          title: data.title,
+          album: {
+            id: data.album.id.toString(),
+            name: data.album.title,
+            cover: data.album.cover_medium,
+          },
+          artists: artists.map((artist) => ({
+            id: artist.id.toString(),
+            name: artist.name,
+            picture: artist.picture_medium ?? null,
+          })),
+          duration: data.duration,
+          explicit_lyrics: data.explicit_lyrics,
+        };
+      }),
+    ),
+  };
+
+  return mappedResponse;
 };
 
 export const getRecomendations = async (): Promise<Recomendations> => {

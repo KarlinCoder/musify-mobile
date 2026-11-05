@@ -66,7 +66,7 @@ export default function AppNavbar() {
               : pathname === tab.href || pathname.startsWith(`${tab.href}/`);
 
           return (
-            <Link key={tab.key} href={tab.href} asChild>
+            <Link prefetch key={tab.key} href={tab.href} asChild>
               <Pressable className="flex-1 items-center justify-center gap-1 py-1">
                 <Ionicons
                   name={isActive ? tab.iconActive : tab.icon}

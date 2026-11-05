@@ -1,12 +1,12 @@
 import AppTopBar from "@/components/AppTopBar";
-import { FlatList, Pressable, ScrollView, Text, View } from "react-native";
+import { Pressable, ScrollView, Text, View } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import SearchButton from "./components/SearchButton";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import { getGenres } from "@/services/deezer.service";
 import GenreCard from "@/components/GenreCard";
 import { splitArray } from "../home/utils/split-array";
+import Loader from "@/components/Loader";
 
 export default function SearchScreen() {
   const {
@@ -21,9 +21,11 @@ export default function SearchScreen() {
   });
 
   const groupedGenres =
-    genres && splitArray(genres, Math.ceil(genres.length / 2));
-
-  alert(groupedGenres);
+    genres &&
+    splitArray(
+      genres.filter((genre) => genre.id !== "0"),
+      Math.ceil(genres.length / 2),
+    );
 
   return (
     <View className="flex-1 gap-1">
@@ -43,22 +45,30 @@ export default function SearchScreen() {
         <SearchButton />
       </View>
 
-      <ScrollView className="px-4 pb-10">
-        <View className="flex-row gap-2 size-full flex-wrap">
-          {isLoading && <Text className="text-white">Cargando generos</Text>}
-          {error && <Text className="text-white">Error: {error.message}</Text>}
+      <ScrollView
+        className="flex-1 px-4"
+        contentContainerClassName="pb-28"
+        overScrollMode="never"
+      >
+        {isLoading && (
+          <View className="size-full items-center justify-center">
+            <Loader />
+          </View>
+        )}
 
-          {groupedGenres &&
-            groupedGenres.map((group, index) => {
-              return (
-                <View key={index} className="size-10 grow shrink">
-                  {group.map((genre) => (
-                    <GenreCard key={genre.id} genre={genre} />
-                  ))}
-                </View>
-              );
-            })}
-        </View>
+        {error && <Text className="text-white">Error: {error.message}</Text>}
+
+        {groupedGenres && (
+          <View className="flex-row flex-wrap gap-3.5">
+            {groupedGenres.map((group, index) => (
+              <View key={index} className="flex-1 gap-3.5">
+                {group.map((genre) => (
+                  <GenreCard key={genre.id} genre={genre} />
+                ))}
+              </View>
+            ))}
+          </View>
+        )}
       </ScrollView>
     </View>
     //

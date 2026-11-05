@@ -9,6 +9,7 @@ import ArtistCard from "@/components/ArtistCard";
 import PlaylistCard from "@/components/PlaylistCard";
 import AppTopBar from "@/components/AppTopBar";
 import TrackCard from "@/components/TrackCard";
+import Loader from "@/components/Loader";
 
 export default function HomeScreen() {
   const groups = ["Canciones", "Albumes", "Artistas", "Playlists"] as const;
@@ -40,6 +41,14 @@ export default function HomeScreen() {
 
   const [selectedGroup, setSelectedGroup] = useState<(typeof groups)[number]>();
 
+  if (isLoadingCharts || isLoadingRecommendations) {
+    return (
+      <View className="size-full items-center justify-center">
+        <Loader />
+      </View>
+    );
+  }
+
   return (
     <View className="flex-1 gap-3 items-start justify-start">
       <AppTopBar scroll>
@@ -68,12 +77,6 @@ export default function HomeScreen() {
         <Text className="text-text-muted text-[13px] font-spotify-regular">
           Explora la musica que la gente ama actualmente
         </Text>
-
-        {isLoadingCharts && <Text className="text-white">Cargando charts</Text>}
-
-        {isLoadingRecommendations && (
-          <Text className="text-white">Cargando recomendations</Text>
-        )}
 
         {errorCharts && (
           <Text className="text-red-400">
