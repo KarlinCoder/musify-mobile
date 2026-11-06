@@ -3,13 +3,41 @@ import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
 
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { BottomSheet, Host } from "@expo/ui";
+import { BottomSheet, Host, RNHostView } from "@expo/ui";
 import { truncateText } from "@/utils/truncate-text";
 import ExplicitMark from "./ExplicitMark";
 
 interface Props {
   track: Track;
 }
+
+const TRACK_ACTIONS = [
+  { id: "share", label: "Compartir", icon: "share-social-outline" },
+  {
+    id: "add-to-library",
+    label: "Agregar a Biblioteca",
+    icon: "add-circle-outline",
+  },
+  { id: "download", label: "Descargar", icon: "download-outline" },
+  { id: "go-to-album", label: "Ir al álbum", icon: "albums-outline" },
+  { id: "go-to-artist", label: "Ir al artista", icon: "person-outline" },
+  {
+    id: "go-to-radio",
+    label: "Ir a radio de la canción",
+    icon: "radio-outline",
+  },
+  { id: "view-lyrics", label: "Ver letra", icon: "document-text-outline" },
+  {
+    id: "view-credits",
+    label: "Ver créditos de la canción",
+    icon: "information-circle-outline",
+  },
+  {
+    id: "show-musify-code",
+    label: "Mostrar código de Musify",
+    icon: "qr-code-outline",
+  },
+];
 
 export default function TrackCard({ track }: Props) {
   const [isActionsOpen, setIsActionsOpen] = useState(false);
@@ -23,14 +51,14 @@ export default function TrackCard({ track }: Props) {
             contentFit="cover"
             placeholder={require("../assets/images/fallback/track.png")}
             placeholderContentFit="cover"
-            style={{ width: 60, height: 60, borderRadius: 7 }}
+            style={{ width: 53, height: 53, borderRadius: 4 }}
           />
 
-          <View className="gap-1">
+          <View className="gap-1s">
             <Text
               numberOfLines={1}
               ellipsizeMode="tail"
-              className="text-text text-[16px] font-spotify-regular pr-10"
+              className="text-text text-[17px] font-spotify-regular pr-10"
             >
               {truncateText(track.title, 27)}
             </Text>
@@ -63,35 +91,46 @@ export default function TrackCard({ track }: Props) {
           snapPoints={[{ fraction: 0.5 }, "full"]}
           containerColor="#1F1F1F"
         >
-          <View className="gap-4 p-2">
-            <View className="gap-1">
-              <Text className="text-text text-[18px] font-spotify-bold">
-                {track.title}
-              </Text>
-              <Text className="text-text-muted text-[13px] font-spotify-regular">
-                {track.artists.map((artist) => artist.name).join(", ")}
-              </Text>
-            </View>
+          <RNHostView>
+            <View className="flex-1">
+              <View className="flex-row items-center gap-2 w-full h-15">
+                <Image
+                  source={track.album.cover}
+                  contentFit="cover"
+                  placeholder={require("../assets/images/fallback/track.png")}
+                  placeholderContentFit="cover"
+                  style={{ aspectRatio: 1, height: "100%", borderRadius: 5 }}
+                />
+                <View className="flex-col justify-center items-start">
+                  <Text
+                    numberOfLines={2}
+                    className="text-white text-[17px] font-spotify-regular"
+                  >
+                    {track.title}
+                  </Text>
+                  <Text className="text-text-muted text-[14px] font-spotify-regular">
+                    {track.artists.map((track) => track.name).join(", ")}
+                  </Text>
+                </View>
+              </View>
 
-            <View className="gap-2">
-              <Pressable
-                className="rounded-lg bg-[#333333] px-4 py-3"
-                onPress={() => setIsActionsOpen(false)}
-              >
-                <Text className="text-text font-spotify-medium">
-                  Reproducir
-                </Text>
-              </Pressable>
-              <Pressable
-                className="rounded-lg bg-[#333333] px-4 py-3"
-                onPress={() => setIsActionsOpen(false)}
-              >
-                <Text className="text-text font-spotify-medium">
-                  Añadir a la cola
-                </Text>
-              </Pressable>
+              <View className="w-full bg-white/20 h-px my-3 mt-5" />
+
+              <View className="size-full">
+                {TRACK_ACTIONS.map((option) => (
+                  <Pressable
+                    key={option.id}
+                    className="flex-row items-center justify-start gap-3 px-2 py-3 active:opacity-60"
+                  >
+                    <Ionicons name={option.icon} size={27} color={"#B3B3B3"} />
+                    <Text className="text-white font-spotify-regular text-[17px]">
+                      {option.label}
+                    </Text>
+                  </Pressable>
+                ))}
+              </View>
             </View>
-          </View>
+          </RNHostView>
         </BottomSheet>
       </Host>
     </>

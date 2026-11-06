@@ -16,7 +16,10 @@ export default function ArtistCard({ artist }: Props) {
         style={{ width: 160, height: 160, borderRadius: 99999999 }}
       />
 
-      <Text className="text-text text-[15px] font-spotify-medium text-center">
+      <Text
+        numberOfLines={1}
+        className="text-text text-[15px] font-spotify-medium text-center"
+      >
         {artist.name}
       </Text>
     </View>

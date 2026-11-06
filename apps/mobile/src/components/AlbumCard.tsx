@@ -27,7 +27,10 @@ export default function AlbumCard({ album }: Props) {
       />
 
       <View className="gap-1">
-        <Text className="text-text text-[15px] font-spotify-medium">
+        <Text
+          numberOfLines={2}
+          className="text-text text-[15px] font-spotify-medium"
+        >
           {album.title}
         </Text>
         <View className="flex-row items-center gap-1.5">

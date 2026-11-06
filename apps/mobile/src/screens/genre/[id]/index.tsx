@@ -15,11 +15,16 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated";
 
+import { getColors } from "react-native-image-colors";
+import { useEffect, useState } from "react";
+
 interface ScreenProps {
   genreId: string;
 }
 
 export default function GenreScreen({ genreId }: ScreenProps) {
+  const [averageImageColor, setAverageImageColor] = useState("");
+
   const results = useQueries({
     queries: [
       {
@@ -54,6 +59,21 @@ export default function GenreScreen({ genreId }: ScreenProps) {
     },
   });
 
+  useEffect(() => {
+    (async () => {
+      if (!genre?.picture) return;
+
+      const color = await getColors(genre?.picture, {
+        fallback: "#000",
+        cache: true,
+      });
+
+      setAverageImageColor(
+        color.platform === "android" ? color.average : "#000",
+      );
+    })();
+  }, [genre?.picture]);
+
   if (isLoading) {
     return (
       <View className="size-full items-center justify-center">
@@ -74,7 +94,11 @@ export default function GenreScreen({ genreId }: ScreenProps) {
 
   return (
     <View className="size-full">
-      <FloatingHeader title={genre?.name ?? ""} scrollY={scrollY} />
+      <FloatingHeader
+        title={genre?.name ?? ""}
+        scrollY={scrollY}
+        color={averageImageColor}
+      />
 
       <Animated.ScrollView
         className="size-full"

@@ -13,6 +13,9 @@ importers:
 
   apps/mobile:
     dependencies:
+      '@devvie/bottom-sheet':
+        specifier: ^0.5.0
+        version: 0.5.0(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
       '@expo/ui':
         specifier: ~57.0.23
         version: 57.0.23(@babel/core@7.29.7)(@types/react@19.2.18)(expo@57.0.28)(react-dom@19.2.3(react@19.2.3))(react-native-worklets@0.10.1(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3))(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
@@ -28,6 +31,9 @@ importers:
       '@react-navigation/drawer':
         specifier: ^7.14.2
         version: 7.14.2(181da1f2b4919941027527970d8bba5e)
+      '@swmansion/react-native-bottom-sheet':
+        specifier: ^0.17.1
+        version: 0.17.1(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)
       '@tanstack/query-async-storage-persister':
         specifier: ^5.105.0
         version: 5.105.0
@@ -709,6 +715,12 @@ packages:
   '@babel/types@7.29.8':
     resolution: {integrity: sha512-Vj1jF3cPfxg7OAfoI7QnVKLoILlm2JF9pnVHrX8qx7AHMiYWT+NDAA7jChlNgRS4WTLc/fD1lXLmPixluj+3Gg==}
     engines: {node: '>=6.9.0'}
+
+  '@devvie/bottom-sheet@0.5.0':
+    resolution: {integrity: sha512-TshJ3+c6rpoqEY3JJJrT+w0EXye/+4yP7u1GaKMj1IBiJigdaeJFFhOr9oga1bL9XbMRmKGp5qaMkJq4UbKQhw==}
+    peerDependencies:
+      react: '>=18.2.0'
+      react-native: '>=0.73.4'
 
   '@drizzle-team/brocli@0.10.2':
     resolution: {integrity: sha512-z33Il7l5dKjUgGULTqBsQBQwckHh5AbIuxhdsIxDDiZAzBOrZO6q9ogcWC65kU382AfynTfgNumVcNIjuIua6w==}
@@ -2346,6 +2358,12 @@ packages:
     engines: {node: '>=14'}
     peerDependencies:
       '@svgr/core': '*'
+
+  '@swmansion/react-native-bottom-sheet@0.17.1':
+    resolution: {integrity: sha512-WVEV5yPje8gW8TB7tTjUhdw+2u3XqYa4mLA31jqMzANl9AI0hd2SWbZ0uJXo1LH7KO88nMVKUmfs13RpHdpZUg==}
+    peerDependencies:
+      react: '>=18.0.0'
+      react-native: '>=0.76.0'
 
   '@tailwindcss/node@4.3.3':
     resolution: {integrity: sha512-/T8IKEsf9VTU6tLjgC7+sv2mOPtQxzE2jMw7u4Tt40Tx+QSZxpzh95/H6cMKoja9XuW7iMdLJYBB0o9G1CaAgg==}
@@ -6863,6 +6881,11 @@ snapshots:
       '@babel/helper-string-parser': 7.29.7
       '@babel/helper-validator-identifier': 7.29.7
 
+  '@devvie/bottom-sheet@0.5.0(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)':
+    dependencies:
+      react: 19.2.3
+      react-native: 0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3)
+
   '@drizzle-team/brocli@0.10.2': {}
 
   '@egjs/hammerjs@2.0.17':
@@ -8721,6 +8744,11 @@ snapshots:
       svgo: 3.3.5
     transitivePeerDependencies:
       - typescript
+
+  '@swmansion/react-native-bottom-sheet@0.17.1(react-native@0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3))(react@19.2.3)':
+    dependencies:
+      react: 19.2.3
+      react-native: 0.86.3(@babel/core@7.29.7)(@react-native/metro-config@0.86.3(@babel/core@7.29.7))(@types/react@19.2.18)(react@19.2.3)
 
   '@tailwindcss/node@4.3.3':
     dependencies:

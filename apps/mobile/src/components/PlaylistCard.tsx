@@ -20,7 +20,7 @@ export default function PlaylistCard({ playlist }: Props) {
         <Text
           numberOfLines={2}
           ellipsizeMode="tail"
-          className="w-[160px] h-[36px] leading-[18px] text-text-muted text-[13px] font-spotify-regular"
+          className="w-40 h-9 leading-4.5 text-text-muted text-[13px] font-spotify-regular"
         >
           {`${playlist.title}. ${playlist.description ?? ""}`}
         </Text>
